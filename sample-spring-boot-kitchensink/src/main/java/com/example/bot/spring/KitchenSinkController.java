@@ -290,6 +290,54 @@ public class KitchenSinkController {
 		default:{log.info("Stage error.");}
 		}
 	}
+	
+	private void mainStageHandler(String replyToken, Event event, String text) {
+		switch(subStage) {
+		case 0:{
+			String msg = "Welcome to ZK's Diet Planner!\n\n"
+				+ "We provide serveral functions for you to keep your fitness."
+				+ "Please type the number of function you wish to use. :)\n\n"
+				+ "1 Diet Planner \n"
+				+ "2 Healthpedia \n"
+				+ "3 Feedback \n"
+				+ "4 User Guide(recommended for first-time users)\n\n"
+				+ "Please enter your choice:(1-4)";
+			this.replyText(replyToken, msg);
+			subStage+=1;
+		}break;
+		case 1:{
+			String msg = null;
+			switch(text) {
+			case "1":{
+				//move to diet planner
+				msg = "Moving to Diet Planner...Input anything to continue...";
+				currentStage = "DP";
+				subStage = 0;
+			}break;
+			case "2":{
+				//move to health pedia
+				msg = "Moving to Diet Planner...Input anything to continue...";
+				currentStage = "HP";
+				subStage = 0;
+			}break;
+			case "3":{
+				//move to feedback
+				msg = "Moving to FeedBack...Input anything to continue...";
+				currentStage = "FB";
+				subStage = 0;
+			}break;
+			case "4":{
+				msg ="Moving to User Guide...Input anything to continue...";
+				currentStage = "UG";
+				subStage = 0;
+				//move to user guide
+			}break;
+			default:{msg = "Invalid input! Please input numbers from 1 to 4!!";}
+			}
+			this.replyText(replyToken, msg);
+		}break;
+		}
+	}
 
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
@@ -299,116 +347,14 @@ public class KitchenSinkController {
         		initStageHandler(replyToken, event, text);
         		break;
         	/////////////////////////////////////////////////////////////////
-        	case "Main":{
-        		switch(subStage) {
-        		case 0:{
-        			String msg = "Welcome to ZK's Diet Planner!\n\n"
-        				+ "We provide serveral functions for you to keep your fitness."
-        				+ "Please type the number of function you wish to use. :)\n\n"
-        				+ "1 Diet Planner \n"
-        				+ "2 Healthpedia \n"
-        				+ "3 Feedback \n"
-        				+ "4 User Guide(recommended for first-time users)\n\n"
-        				+ "Please enter your choice:(1-4)";
-        			this.replyText(replyToken, msg);
-        			subStage+=1;
-        		}break;
-        		case 1:{
-        			String msg = null;
-        			switch(text) {
-        			case "1":{
-        				//move to diet planner
-        				msg = "Moving to Diet Planner...Input anything to continue...";
-        				currentStage = "DP";
-        				subStage = 0;
-        			}break;
-        			case "2":{
-        				//move to health pedia
-        				msg = "Moving to Diet Planner...Input anything to continue...";
-        				currentStage = "HP";
-        				subStage = 0;
-        			}break;
-        			case "3":{
-        				//move to feedback
-        				msg = "Moving to FeedBack...Input anything to continue...";
-        				currentStage = "FB";
-        				subStage = 0;
-        			}break;
-        			case "4":{
-        				msg ="Moving to User Guide...Input anything to continue...";
-        				currentStage = "UG";
-        				subStage = 0;
-        				//move to user guide
-        			}break;
-        			default:{msg = "Invalid input! Please input numbers from 1 to 4!!";}
-        			}
-        			this.replyText(replyToken, msg);
-        		}break;
-        		}
-        	}break;
+        	case "Main":
+        		mainStageHandler(replyToken, event, text);
+        		break;
         	///////////////////////////////////////////////////////////////////
-        	default:{
-                switch (text) {
-                    case "profile": {
-                        String userId = event.getSource().getUserId();
-                        if (userId != null) {
-                            lineMessagingClient
-                                    .getProfile(userId)
-                                    .whenComplete(new ProfileGetter (this, replyToken));
-                        } else {
-                            this.replyText(replyToken, "Bot can't use profile API without user ID");
-                        }
-                        break;
-                    }
-                    case "confirm": {
-                        ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-                                "Do it?",
-                                new MessageAction("Yes", "Yes!"),
-                                new MessageAction("No", "No!")
-                        );
-                        TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-                        this.reply(replyToken, templateMessage);
-                        break;
-                    }
-                    case "carousel": {
-                        String imageUrl = createUri("/static/buttons/1040.jpg");
-                        CarouselTemplate carouselTemplate = new CarouselTemplate(
-                                Arrays.asList(
-                                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                                new URIAction("Go to line.me",
-                                                              "https://line.me"),
-                                                new PostbackAction("Say hello1",
-                                                                   "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�")
-                                        )),
-                                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                                new PostbackAction("癡穡� hello2",
-                                                                   "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�",
-                                                                   "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�"),
-                                                new MessageAction("Say message",
-                                                                  "Rice=癟簣糧")
-                                        ))
-                                ));
-                        TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-                        this.reply(replyToken, templateMessage);
-                        break;
-                    }
-
-                    default:
-                    	String reply = null;
-                    	try {
-                    		reply = database.search(text);
-                    	} catch (Exception e) {
-                    		reply = text;
-                    	}
-                        log.info("Returns echo message {}: {}", replyToken, reply);
-                        this.replyText(
-                                replyToken,
-                                itscLOGIN + " says " + reply
-                        );
-                        break;
-                }
-        		
-        	}
+        	default:
+        		String msg = "I am deactivated. To reactivate me, please block->unblock me.";
+        		this.replyText(replyToken, msg);
+        		break;
         }
             
     }
