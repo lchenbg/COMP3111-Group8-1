@@ -238,10 +238,14 @@ public class KitchenSinkController {
                 	else {log.info("01");}
         		}break;
         		case 1:{
-        			currentUser = new Users(event.getSource().getUserId(),text);
-        			log.info("1");
-        			this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
-        			subStage += 1;
+        			if (text.length()>32 || text.length()<=0) {
+        				this.replyText(replyToken,"Please enter your name: (1-32 characters)");
+        			}
+        			else {
+        				currentUser = new Users(event.getSource().getUserId(), text);
+        				this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
+        				subStage += 1;
+        			}
         		}break;
         		case 2:{
         			currentUser.setGender(text.charAt(0));
