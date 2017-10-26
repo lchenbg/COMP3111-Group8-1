@@ -223,78 +223,81 @@ public class KitchenSinkController {
 	private void handleSticker(String replyToken, StickerMessageContent content) {
 		reply(replyToken, new StickerMessage(content.getPackageId(), content.getStickerId()));
 	}
+	
+	private void initStageHandler(String replyToken, Event event, String text) {
+		switch(subStage) {	
+		case 0:{
+			if(text.equals("1")) {
+				log.info("0");//
+        		//read inputs
+        		this.replyText(replyToken, "Please enter your name: (1-32 characters)");
+        		subStage += 1;
+        	}
+        	else {
+        		String msg = "I will be deactivated. To reactivate me, please block->unblock me. Bye.";
+        		this.replyText(replyToken,msg);
+        	}
+		}break;
+		case 1:{
+			if (text.length()>32 || text.length()<=0) {
+				this.replyText(replyToken,"Please enter your name: (1-32 characters)");
+			}
+			else {
+				currentUser = new Users(event.getSource().getUserId(), text);
+				this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
+				subStage += 1;
+			}
+		}break;
+		case 2:{
+			if(Character.toUpperCase(text.charAt(0))=='M' ||Character.toUpperCase(text.charAt(0))=='F') {
+				currentUser.setGender(text.charAt(0));
+				this.replyText(replyToken, "Please enter your height in cm:");
+				subStage+=1;
+			}
+			else {
+				this.replyText(replyToken, "Please enter your gender: (M for male F for female):");
+			}
+		}break;
+		case 3:{
+			try {
+				if( Integer.parseInt(text) < 260 && Integer.parseInt(text)> 50 ) {
+					currentUser.setHeight(Integer.parseInt(text));
+					this.replyText(replyToken, "Please enter your weight in kg:");
+					subStage+=1;
+				}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 4:{
+			try {
+				if( Integer.parseInt(text) < 300 && Integer.parseInt(text)> 0 ) {
+        			currentUser.setWeight(Integer.parseInt(text));
+        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+        			currentStage = "Main";
+        			subStage = 0;   
+        			///
+        			//push user to SQL DB here
+        			///
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+
+		}break;
+		default:{log.info("Stage error.");}
+		}
+	}
 
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
         switch(currentStage) {
-        	case "Init": {
-        		log.info(Integer.toString(subStage));
-        		log.info(text);
-        		switch(subStage) {	
-        		case 0:{
-        			if(text.equals("1")) {
-        				log.info("0");//
-                		//read inputs
-                		this.replyText(replyToken, "Please enter your name: (1-32 characters)");
-                		subStage += 1;
-                	}
-                	else {log.info("01");}
-        		}break;
-        		case 1:{
-        			if (text.length()>32 || text.length()<=0) {
-        				this.replyText(replyToken,"Please enter your name: (1-32 characters)");
-        			}
-        			else {
-        				currentUser = new Users(event.getSource().getUserId(), text);
-        				this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
-        				subStage += 1;
-        			}
-        		}break;
-        		case 2:{
-        			if(Character.toUpperCase(text.charAt(0))=='M' ||Character.toUpperCase(text.charAt(0))=='F') {
-        				currentUser.setGender(text.charAt(0));
-        				this.replyText(replyToken, "Please enter your height in cm:");
-        				subStage+=1;
-        			}
-        			else {
-        				this.replyText(replyToken, "Please enter your gender: (M for male F for female):");
-        			}
-        		}break;
-        		case 3:{
-        			try {
-        				if( Integer.parseInt(text) < 260 && Integer.parseInt(text)> 50 ) {
-        					currentUser.setHeight(Integer.parseInt(text));
-        					this.replyText(replyToken, "Please enter your weight in kg:");
-        					subStage+=1;
-        				}
-        				else {
-        					this.replyText(replyToken, "Please enter reasonable numbers!");
-        				}
-        			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
-        		}break;
-        		case 4:{
-        			try {
-        				if( Integer.parseInt(text) < 300 && Integer.parseInt(text)> 0 ) {
-                			currentUser.setWeight(Integer.parseInt(text));
-                			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-                			currentStage = "Main";
-                			subStage = 0;   
-                			///
-                			//push user to SQL DB here
-                			///
-                			}
-        				else {
-        					this.replyText(replyToken, "Please enter reasonable numbers!");
-        				}
-        			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
-
-        		}break;
-        		default:{
-        			log.info("Stage error.");
-        		}
-        		}
-        	}break;
+        	case "Init": 
+        		initStageHandler(replyToken, event, text);
+        		break;
         	/////////////////////////////////////////////////////////////////
         	case "Main":{
         		switch(subStage) {
