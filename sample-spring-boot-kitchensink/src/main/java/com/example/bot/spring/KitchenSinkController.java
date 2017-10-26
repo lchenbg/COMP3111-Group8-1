@@ -102,7 +102,6 @@ public class KitchenSinkController {
 		log.info("This is your entry point:");
 		log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		TextMessageContent message = event.getMessage();
-		log.info("Test");
 		handleTextContent(event.getReplyToken(), event, message);
 		
 	}
@@ -219,7 +218,7 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
-        log.info("CurrentStage:",currentStage);
+        log.info("CurrentStage:"+currentStage);
        // log.info("Got text message from {}: {}", replyToken, text);
         switch(currentStage) {
         	case "Init": {
