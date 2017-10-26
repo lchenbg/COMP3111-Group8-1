@@ -248,20 +248,43 @@ public class KitchenSinkController {
         			}
         		}break;
         		case 2:{
-        			currentUser.setGender(text.charAt(0));
-        			this.replyText(replyToken, "Please enter your height in cm:");
-        			subStage+=1;
+        			if(text.charAt(0)=='M' ||text.charAt(0)=='F') {
+        				currentUser.setGender(text.charAt(0));
+        				this.replyText(replyToken, "Please enter your height in cm:");
+        				subStage+=1;
+        			}
+        			else {
+        				this.replyText(replyToken, "Please enter your gender: (M for male F for female):");
+        			}
         		}break;
         		case 3:{
-        			currentUser.setHeight(Integer.parseInt(text));
-        			this.replyText(replyToken, "Please enter your weight in kg:");
-        			subStage+=1;
+        			try {
+        				if( Integer.parseInt(text) < 260 && Integer.parseInt(text)> 50 ) {
+        					currentUser.setHeight(Integer.parseInt(text));
+        					this.replyText(replyToken, "Please enter your weight in kg:");
+        					subStage+=1;
+        				}
+        				else {
+        					this.reply(replyToken, "Please enter reasonable numbers!");
+        				}
+        			}catch(NumberFormatException ne){this.reply(replyToken, "Please enter numbers!!");}
         		}break;
         		case 4:{
-        			currentUser.setWeight(Integer.parseInt(text));
-        			this.replyText(replyToken, "Your data has been recorded.\n Type any key to our main menu.");
-        			currentStage = "Main";
-        			subStage = 0;
+        			try {
+        				if( Integer.parseInt(text) < 300 && Integer.parseInt(text)> 0 ) {
+                			currentUser.setWeight(Integer.parseInt(text));
+                			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+                			currentStage = "Main";
+                			subStage = 0;   
+                			///
+                			//push user to SQL DB here
+                			///
+                			}
+        				else {
+        					this.reply(replyToken, "Please enter reasonable numbers!");
+        				}
+        			}catch(NumberFormatException ne){this.reply(replyToken, "Please enter numbers!!");}
+
         		}break;
         		default:{
         			log.info("Stage error.");
@@ -270,15 +293,39 @@ public class KitchenSinkController {
         	}break;
         	/////////////////////////////////////////////////////////////////
         	case "Main":{
-        		String msg = "Welcome to ZK's Diet Planner!\n\n"
+        		switch(subStage) {
+        		case 0:{
+        			String msg = "Welcome to ZK's Diet Planner!\n\n"
         				+ "We provide serveral functions for you to keep your fitness."
         				+ "Please type the number of function you wish to use. :)\n\n"
         				+ "1 Diet Planner \n"
         				+ "2 Healthpedia \n"
         				+ "3 Feedback \n"
         				+ "4 User Guide(recommended for first-time users)\n\n"
-        				+ "Please enter your choice:";
-        		this.replyText(replyToken, msg);
+        				+ "Please enter your choice:(1-4)";
+        			this.replyText(replyToken, msg);
+        			substage+=1;
+        		}break;
+        		case 1:{
+        			String msg = null;
+        			switch(text) {
+        			case "1":{
+        				//move to diet planner
+        			}break;
+        			case "2":{
+        				//move to health pedia
+        			}break;
+        			case "3":{
+        				//move to feedback
+        			}break;
+        			case "4":{
+        				//move to user guide
+        			}break;
+        			default:{msg = "Invalid input! Please input numbers from 1 to 4!!";}
+        			}
+        			this.replyText(replyToken, msg);
+        		}break;
+        		}
         	}break;
         	///////////////////////////////////////////////////////////////////
         	default:{
