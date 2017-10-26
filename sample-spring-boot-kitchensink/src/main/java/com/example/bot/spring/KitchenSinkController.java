@@ -155,10 +155,10 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleFollowEvent(FollowEvent event) {
 		String replyToken = event.getReplyToken();
-		String msgbuffer = "Welcome "+ event.getSource().getUserId()+" !"
-				+ "To start using our services, please follow the instructions below.";
-		this.replyText(replyToken, msgbuffer);
-		
+		String msgbuffer = "Welcome !! To start using our services, please follow the instructions below.\n"
+			+ "Create Personal Diet Tracker: type \'1\'\n"
+			+ "Say goodbye to me: type any\n";
+		this.replyText(replyToken, msgbuffer);	
 	}
 
 	@EventMapping
