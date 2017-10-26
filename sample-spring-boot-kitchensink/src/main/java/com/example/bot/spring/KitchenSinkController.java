@@ -223,21 +223,23 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
-        log.info("CurrentStage:"+currentStage);
-       // log.info("Got text message from {}: {}", replyToken, text);
         switch(currentStage) {
         	case "Init": {
+        		log.info(Integer.toString(subStage));
+        		log.info(text);
         		switch(subStage) {	
         		case 0:{
-        			if(text == "1") {
+        			if(text.equals("1")) {
+        				log.info("0");//
                 		//read inputs
                 		this.replyText(replyToken, "Please enter your name: (1-32 characters)");
                 		subStage += 1;
                 	}
-                	//else quit program
+                	else {log.info("01");}
         		}break;
         		case 1:{
         			currentUser = new Users(event.getSource().getUserId(),text);
+        			log.info("1");
         			this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
         			subStage += 1;
         		}break;
