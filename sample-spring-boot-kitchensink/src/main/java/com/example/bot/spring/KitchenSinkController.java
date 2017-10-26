@@ -152,7 +152,9 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleUnfollowEvent(UnfollowEvent event) {
 		log.info("unfollowed this bot: {}", event);
-		
+		currentStage = "Init";
+		subStage = 0;
+		currentUser = null;
 	}
 
 	@EventMapping
@@ -162,6 +164,9 @@ public class KitchenSinkController {
 			+ "Create Personal Diet Tracker: type \'1\'\n\n"
 			+ "Say goodbye to me: type any\n";
 		this.replyText(replyToken, msgbuffer);	
+		currentStage = "Init";
+		subStage = 0;
+		currentUser = null;
 	}
 
 	@EventMapping
