@@ -252,7 +252,7 @@ public class KitchenSinkController {
         			}
         		}break;
         		case 2:{
-        			if(text.charAt(0).toUpper=='M' ||text.charAt(0)=='F') {
+        			if(Character.toUpperCase(text.charAt(0))=='M' ||Character.toUpperCase(text.charAt(0))=='F') {
         				currentUser.setGender(text.charAt(0));
         				this.replyText(replyToken, "Please enter your height in cm:");
         				subStage+=1;
@@ -269,9 +269,9 @@ public class KitchenSinkController {
         					subStage+=1;
         				}
         				else {
-        					this.reply(replyToken, "Please enter reasonable numbers!");
+        					this.replyText(replyToken, "Please enter reasonable numbers!");
         				}
-        			}catch(NumberFormatException ne){this.reply(replyToken, "Please enter numbers!!");}
+        			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
         		}break;
         		case 4:{
         			try {
@@ -285,9 +285,9 @@ public class KitchenSinkController {
                 			///
                 			}
         				else {
-        					this.reply(replyToken, "Please enter reasonable numbers!");
+        					this.replyText(replyToken, "Please enter reasonable numbers!");
         				}
-        			}catch(NumberFormatException ne){this.reply(replyToken, "Please enter numbers!!");}
+        			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 
         		}break;
         		default:{
@@ -308,21 +308,33 @@ public class KitchenSinkController {
         				+ "4 User Guide(recommended for first-time users)\n\n"
         				+ "Please enter your choice:(1-4)";
         			this.replyText(replyToken, msg);
-        			substage+=1;
+        			subStage+=1;
         		}break;
         		case 1:{
         			String msg = null;
         			switch(text) {
         			case "1":{
         				//move to diet planner
+        				msg = "Moving to Diet Planner...Input anything to continue...";
+        				currentStage = "DP";
+        				subStage = 0;
         			}break;
         			case "2":{
         				//move to health pedia
+        				msg = "Moving to Diet Planner...Input anything to continue...";
+        				currentStage = "HP";
+        				subStage = 0;
         			}break;
         			case "3":{
         				//move to feedback
+        				msg = "Moving to FeedBack...Input anything to continue...";
+        				currentStage = "FB";
+        				subStage = 0;
         			}break;
         			case "4":{
+        				msg ="Moving to User Guide...Input anything to continue...";
+        				currentStage = "UG";
+        				subStage = 0;
         				//move to user guide
         			}break;
         			default:{msg = "Invalid input! Please input numbers from 1 to 4!!";}
