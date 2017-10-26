@@ -18,7 +18,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
-					"SELECT id FROM users WHERE id=sconcat(?)");
+					"SELECT id FROM users WHERE id=(?)");
 			stmt.setString(1,uidkey);
 			ResultSet rs = stmt.executeQuery();
             
@@ -46,7 +46,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
-					"INSERT INTO users VALUES concat(?,?,?,?,?)");
+					"INSERT INTO users VALUES(?,?,?,?,?)");
 			stmt.setString(1, user.getID());
 			stmt.setString(2, user.getName());
 			String temp = ""+user.getGender();
