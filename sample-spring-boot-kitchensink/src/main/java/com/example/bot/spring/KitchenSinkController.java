@@ -342,6 +342,12 @@ public class KitchenSinkController {
 		}
 	}
 
+	private void dietPlannerHandler(String replyToken, Event event, String text) {}
+	private void healthPediaHandler(String replyToken, Event event, String text) {}
+	private void feedBackHandler(String replyToken, Event event, String text) {}
+	private void userGuideHandler(String replyToken, Event event, String text) {}
+	
+	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
@@ -349,11 +355,21 @@ public class KitchenSinkController {
         	case "Init": 
         		initStageHandler(replyToken, event, text);
         		break;
-        	/////////////////////////////////////////////////////////////////
         	case "Main":
         		mainStageHandler(replyToken, event, text);
         		break;
-        	///////////////////////////////////////////////////////////////////
+        	case "DP":
+        		dietPlannerHandler(replyToken, event, text);
+        		break;
+        	case "HP":
+        		healthPediaHandler(replyToken, event, text);
+        		break;
+        	case "FB":
+        		feedBackHandler(replyToken, event, text);
+        		break;
+        	case "UG":
+        		userGuideHandler(replyToken, event, text);
+        		break;
         	default:
         		String msg = "I am deactivated. To reactivate me, please block->unblock me.";
         		this.replyText(replyToken, msg);
