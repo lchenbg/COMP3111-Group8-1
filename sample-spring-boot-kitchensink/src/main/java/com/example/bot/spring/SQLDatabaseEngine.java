@@ -51,8 +51,8 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			stmt.setString(2, user.getName());
 			String temp = ""+user.getGender();
 			stmt.setString(3, temp) ;
-			stmt.setString(4, user.getHeight());
-			stmt.setString(5, user.getWeight());
+			stmt.setDouble(4, user.getHeight());
+			stmt.setDouble(5, user.getWeight());
 		    result = stmt.execute();
 			stmt.close();
 			connection.close();
