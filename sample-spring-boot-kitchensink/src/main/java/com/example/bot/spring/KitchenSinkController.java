@@ -148,12 +148,18 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleUnfollowEvent(UnfollowEvent event) {
 		log.info("unfollowed this bot: {}", event);
+		String replyToken = event.getReplyToken();
+		this.replyText(replyToken, "Bye");
 	}
 
 	@EventMapping
 	public void handleFollowEvent(FollowEvent event) {
 		String replyToken = event.getReplyToken();
-		this.replyText(replyToken, "Got followed event");
+		String msgbuffer = "Welcome "+ event.getSource().getUserId()+" !"
+				+ "To start using our services, please follow the instructions below.";
+		this.replyText(replyToken, msg);
+		msgbuffer = "How should I call you?";
+		lineMessagingClient.pushMessage(msgbuffer);
 	}
 
 	@EventMapping
