@@ -12,20 +12,18 @@ import java.net.URI;
 
 @Slf4j
 public class SQLDatabaseEngine extends DatabaseEngine {
-	@Override
-	String search(String text) throws Exception {
-		String result = null;
+
+	Users searchUser(String uidkey) throws Exception {
+		String result[] = null;
 		try {
 			Connection connection = this.getConnection();
-			//////////TODO////////
 			PreparedStatement stmt = connection.prepareStatement(
-					"SELECT keyword, response FROM keywordresponsetable where keyword like concat('%',?,'%')");
-			stmt.setString(1,text);
-			////////////////////////
+					"SELECT id FROM users WHERE id=sconcat(?)");
+			stmt.setString(0,uidkey);
 			ResultSet rs = stmt.executeQuery();
             
 			while(rs.next()) {
-				result = rs.getString(2);
+				for(int i = 0 ; i <5 ; i++) result[i] = rs.getString(i);
 			} //this can contain bugs
 			rs.close();
 			stmt.close();
@@ -33,9 +31,38 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		} catch (Exception e) {
 			System.out.println(e);
 		} 
-		if (result != null)	
-			return result;
+		if(result != null)	{
+			Users getuser = new Users(result[0],result[1]);
+			getuser.setGender(result[2].charAt(0));
+			getuser.setHeight(Double.parseDouble(result[3]));
+			getuser.setWeight(Double.parseDouble(result[4]));
+			return getuser;
+		}
 		throw new Exception("NOT FOUND");
+	}
+
+	int pushUser(Users user) {
+		String result = null;
+		int row = 0;
+		try {
+			Connection connection = this.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(
+					"INSERT INTO users VALUES concat(?,?,?,?,?)");
+			stmt.setString(0, user.getID());
+			stmt.setString(1, user.getName());
+			String temp = ""+user.getGender();
+			stmt.setString(2, temp) ;
+			stmt.setString(3, String.valueOf(user.getHeight()));
+			stmt.setString(4, String.valueOf(user.getWeight()));
+		    row = stmt.executeUpdate();
+			stmt.close();
+			connection.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return 0;
+		} 
+		return row;
+		
 	}
 	
 	

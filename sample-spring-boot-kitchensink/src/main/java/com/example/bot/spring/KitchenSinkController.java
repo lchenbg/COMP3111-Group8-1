@@ -95,6 +95,13 @@ public class KitchenSinkController {
 	private String currentStage = "Init";
 	private int subStage = 0;
 	private Users currentUser = null;
+	private SQLDatabaseEngine database;
+	private String itscLOGIN;
+	
+	public KitchenSinkController() {
+		database = new SQLDatabaseEngine();
+		itscLOGIN = System.getenv("ITSC_LOGIN");
+	}
 
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -160,17 +167,22 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleFollowEvent(FollowEvent event) {
 		String replyToken = event.getReplyToken();
-		String msgbuffer = "Welcome!!\nTo start using our services, please follow the instructions below.\n\n"
-			+ "Create Personal Diet Tracker: type \'1\'\n\n"
-			+ "Say goodbye to me: type any\n";
-		//if DB.search(event.getSource().getUserId()) == false 
-		this.replyText(replyToken, msgbuffer);	
-		currentStage = "Init";
-		subStage = 0;
-		currentUser = null;
-		//else currentUser = DB.search(event.getSource().getUserId());
-		//currentStage = "Menu";
-		//subStage = 0;
+		String msgbuffer = null;
+		try{
+			currentUser = database.searchUser(event.getSource().getUserId());
+			currentStage = "Menu";
+			subStage = 0;
+			msgbuffer = "User data reloaded. Type anything to continue...";
+		}catch(Exception e){
+			msgbuffer = "Welcome!!\nTo start using our services, please follow the instructions below.\n\n"
+					+ "Create Personal Diet Tracker: type \'1\'\n\n"
+					+ "Say goodbye to me: type any\n";
+			currentStage = "Init";
+			subStage = 0;
+			currentUser = null;
+		}finally {
+			this.replyText(replyToken, msgbuffer);	
+		}
 	}
 
 	@EventMapping
@@ -263,8 +275,8 @@ public class KitchenSinkController {
 		}break;
 		case 3:{
 			try {
-				if( Integer.parseInt(text) < 260 && Integer.parseInt(text)> 50 ) {
-					currentUser.setHeight(Integer.parseInt(text));
+				if( Double.parseDouble(text) < 260 && Double.parseDouble(text)> 50 ) {
+					currentUser.setHeight(Double.parseDouble(text));
 					this.replyText(replyToken, "Please enter your weight in kg:");
 					subStage+=1;
 				}
@@ -275,14 +287,12 @@ public class KitchenSinkController {
 		}break;
 		case 4:{
 			try {
-				if( Integer.parseInt(text) < 300 && Integer.parseInt(text)> 0 ) {
-        			currentUser.setWeight(Integer.parseInt(text));
+				if( Double.parseDouble(text) < 300 && Double.parseDouble(text)> 0 ) {
+        			currentUser.setWeight(Double.parseDouble(text));
         			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
         			currentStage = "Main";
         			subStage = 0;   
-        			///
-        			//push user to SQL DB here
-        			///
+        			database.pushUser(currentUser);
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
@@ -300,10 +310,11 @@ public class KitchenSinkController {
 			String msg = "Welcome to ZK's Diet Planner!\n\n"
 				+ "We provide serveral functions for you to keep your fitness."
 				+ "Please type the number of function you wish to use. :)\n\n"
-				+ "1 Diet Planner \n"
-				+ "2 Healthpedia \n"
-				+ "3 Feedback \n"
-				+ "4 User Guide(recommended for first-time users)\n\n"
+				+ "1 Living Habit Collector\n"
+				+ "2 Diet Planner(Please complete 1)\n"
+				+ "3 Healthpedia \n"
+				+ "4 Feedback \n"
+				+ "5 User Guide(recommended for first-time users)\n\n"
 				+ "Please enter your choice:(1-4)";
 			this.replyText(replyToken, msg);
 			subStage+=1;
@@ -313,25 +324,31 @@ public class KitchenSinkController {
 			switch(text) {
 			case "1":{
 				//move to diet planner
-				msg = "Moving to Diet Planner...Input anything to continue...";
-				currentStage = "DP";
+				msg = "Moving to Living Habit Collector...Input anything to continue...";
+				currentStage = "LivingHabitCollector";
 				subStage = 0;
 			}break;
 			case "2":{
-				//move to health pedia
+				//move to diet planner
 				msg = "Moving to Diet Planner...Input anything to continue...";
-				currentStage = "HP";
+				currentStage = "DietPlanner";
 				subStage = 0;
 			}break;
 			case "3":{
-				//move to feedback
-				msg = "Moving to FeedBack...Input anything to continue...";
-				currentStage = "FB";
+				//move to health pedia
+				msg = "Moving to Diet Planner...Input anything to continue...";
+				currentStage = "HealthPedia";
 				subStage = 0;
 			}break;
 			case "4":{
+				//move to feedback
+				msg = "Moving to FeedBack...Input anything to continue...";
+				currentStage = "FeedBack";
+				subStage = 0;
+			}break;
+			case "5":{
 				msg ="Moving to User Guide...Input anything to continue...";
-				currentStage = "UG";
+				currentStage = "UserGuide";
 				subStage = 0;
 				//move to user guide
 			}break;
@@ -342,7 +359,23 @@ public class KitchenSinkController {
 		}
 	}
 
-	private void dietPlannerHandler(String replyToken, Event event, String text) {}
+	private void livingHabitCollectorHandler(String replyToken, Event event, String text) {
+		/*switch(subStage) {
+		case 0:{
+			
+		}break;
+		default:break;
+		}*/
+	}
+	private void dietPlannerHandler(String replyToken, Event event, String text) {
+		/*switch(subStage) {
+		case 0:{
+			
+		}break;
+		default:break;
+		}
+		*/
+	}
 	private void healthPediaHandler(String replyToken, Event event, String text) {}
 	private void feedBackHandler(String replyToken, Event event, String text) {}
 	private void userGuideHandler(String replyToken, Event event, String text) {}
@@ -358,16 +391,19 @@ public class KitchenSinkController {
         	case "Main":
         		mainStageHandler(replyToken, event, text);
         		break;
-        	case "DP":
+        	case "LivingHabitCollector":
+        		livingHabitCollectorHandler(replyToken, event, text);
+        		break;
+        	case "DietPlanner":
         		dietPlannerHandler(replyToken, event, text);
         		break;
-        	case "HP":
+        	case "HealthPedia":
         		healthPediaHandler(replyToken, event, text);
         		break;
-        	case "FB":
+        	case "FeedBack":
         		feedBackHandler(replyToken, event, text);
         		break;
-        	case "UG":
+        	case "UserGuide":
         		userGuideHandler(replyToken, event, text);
         		break;
         	default:
@@ -417,17 +453,6 @@ public class KitchenSinkController {
 	}
 
 
-	
-
-
-	public KitchenSinkController() {
-		database = new SQLDatabaseEngine();
-		itscLOGIN = System.getenv("ITSC_LOGIN");
-	}
-
-	private SQLDatabaseEngine database;
-	private String itscLOGIN;
-	
 
 	//The annontation @Value is from the package lombok.Value
 	//Basically what it does is to generate constructor and getter for the class below
