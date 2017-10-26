@@ -14,7 +14,7 @@ import java.net.URI;
 public class SQLDatabaseEngine extends DatabaseEngine {
 
 	Users searchUser(String uidkey) throws Exception {
-		String result[] = null;
+		String result[] = new result[5];
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
@@ -23,15 +23,15 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			ResultSet rs = stmt.executeQuery();
             
 			while(rs.next()) {
-				for(int i = 0 ; i <5 ; i++) result[i] = rs.getString(i);
-			} //this can contain bugs
+				for(int i = 0 ; i <5 ; i++) result[i] = new String(rs.getString(i));
+			} 
 			rs.close();
 			stmt.close();
 			connection.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		} 
-		if(result != null)	{
+		if(result[0] != null)	{
 			Users getuser = new Users(result[0],result[1]);
 			getuser.setGender(result[2].charAt(0));
 			getuser.setHeight(Double.parseDouble(result[3]));
