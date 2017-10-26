@@ -170,7 +170,7 @@ public class KitchenSinkController {
 		String msgbuffer = null;
 		try{
 			currentUser = database.searchUser(event.getSource().getUserId());
-			currentStage = "Menu";
+			currentStage = "Main";
 			subStage = 0;
 			msgbuffer = "User data reloaded. Type anything to continue...";
 		}catch(Exception e){
