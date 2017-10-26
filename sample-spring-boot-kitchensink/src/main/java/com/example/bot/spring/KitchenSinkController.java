@@ -163,10 +163,14 @@ public class KitchenSinkController {
 		String msgbuffer = "Welcome!!\nTo start using our services, please follow the instructions below.\n\n"
 			+ "Create Personal Diet Tracker: type \'1\'\n\n"
 			+ "Say goodbye to me: type any\n";
+		//if DB.search(event.getSource().getUserId()) == false 
 		this.replyText(replyToken, msgbuffer);	
 		currentStage = "Init";
 		subStage = 0;
 		currentUser = null;
+		//else currentUser = DB.search(event.getSource().getUserId());
+		//currentStage = "Menu";
+		//subStage = 0;
 	}
 
 	@EventMapping
@@ -248,7 +252,7 @@ public class KitchenSinkController {
         			}
         		}break;
         		case 2:{
-        			if(text.charAt(0)=='M' ||text.charAt(0)=='F') {
+        			if(text.charAt(0).toUpper=='M' ||text.charAt(0)=='F') {
         				currentUser.setGender(text.charAt(0));
         				this.replyText(replyToken, "Please enter your height in cm:");
         				subStage+=1;
