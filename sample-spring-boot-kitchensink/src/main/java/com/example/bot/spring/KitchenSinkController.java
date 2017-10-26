@@ -294,7 +294,7 @@ public class KitchenSinkController {
         			subStage = 0;   
         			int r = database.pushUser(currentUser);
         			log.info("XXXXXXXXXXXXXXXXXXXXXXX");
-        			log.info(r);
+        			log.info(Integer.toString(r));
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
