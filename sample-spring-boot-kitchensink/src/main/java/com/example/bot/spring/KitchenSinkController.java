@@ -100,6 +100,7 @@ public class KitchenSinkController {
 		log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		TextMessageContent message = event.getMessage();
 		handleTextContent(event.getReplyToken(), event, message);
+		
 	}
 
 	@EventMapping
@@ -148,8 +149,7 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleUnfollowEvent(UnfollowEvent event) {
 		log.info("unfollowed this bot: {}", event);
-		String replyToken = event.getReplyToken();
-		this.replyText(replyToken, "Bye");
+		
 	}
 
 	@EventMapping
@@ -157,9 +157,8 @@ public class KitchenSinkController {
 		String replyToken = event.getReplyToken();
 		String msgbuffer = "Welcome "+ event.getSource().getUserId()+" !"
 				+ "To start using our services, please follow the instructions below.";
-		this.replyText(replyToken, msg);
-		msgbuffer = "How should I call you?";
-		lineMessagingClient.pushMessage(msgbuffer);
+		this.replyText(replyToken, msgbuffer);
+		
 	}
 
 	@EventMapping
