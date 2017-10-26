@@ -14,31 +14,28 @@ import java.net.URI;
 public class SQLDatabaseEngine extends DatabaseEngine {
 
 	Users searchUser(String uidkey) throws Exception {
-		String result[] = new String[5];
+		Users user = null;
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
-					"SELECT id FROM users WHERE id=(?)");
+					"SELECT * FROM users WHERE id=(?)");
 			stmt.setString(1,uidkey);
 			ResultSet rs = stmt.executeQuery();
             
 			while(rs.next()) {
-				for(int i = 0 ; i <5 ; i++) result[i] = new String(rs.getString(i));
+				user = new Users(rs.getString(1),rs.getString(2));
+				user.setGender(rs.getString(3).charAt(0));
+				user.setHeight(rs.getDouble(4));
+				user.setWeight(rs.getDouble(5));
 			} 
 			rs.close();
 			stmt.close();
 			connection.close();
 		} catch (Exception e) {
-			System.out.println(e);
-		} 
-		log.info("XXXXXXXXXXXXXX");
-		log.info(result[0]);
-		if(result[0] != null)	{
-			Users getuser = new Users(result[0],result[1]);
-			getuser.setGender(result[2].charAt(0));
-			getuser.setHeight(Double.parseDouble(result[3]));
-			getuser.setWeight(Double.parseDouble(result[4]));
-			return getuser;
+			log.info(e.getMessage());
+		}
+		if(user != null)	{
+			return user;
 		}
 		throw new Exception("NOT FOUND");
 	}
