@@ -92,6 +92,9 @@ public class KitchenSinkController {
 
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
+	private String currentStage = "Init";
+	private int subStage = 0;
+	private Users currentUser = null;
 
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -155,8 +158,8 @@ public class KitchenSinkController {
 	@EventMapping
 	public void handleFollowEvent(FollowEvent event) {
 		String replyToken = event.getReplyToken();
-		String msgbuffer = "Welcome !! To start using our services, please follow the instructions below.\n"
-			+ "Create Personal Diet Tracker: type \'1\'\n"
+		String msgbuffer = "Welcome!!\nTo start using our services, please follow the instructions below.\n\n"
+			+ "Create Personal Diet Tracker: type \'1\'\n\n"
 			+ "Say goodbye to me: type any\n";
 		this.replyText(replyToken, msgbuffer);	
 	}
@@ -215,67 +218,120 @@ public class KitchenSinkController {
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         String text = content.getText();
+       
+        switch(currentStage) {
+        	case "Init": {
+        		switch(subStage) {	
+        		case 0:{
+        			if(text == "1") {
+                		//read inputs
+                		this.replyText(replyToken, "Please enter your name: (1-32 characters)");
+                		subStage += 1;
+                	}
+                	//else quit program
+        		}break;
+        		case 1:{
+        			currentUser = new Users(event.getSource().getUserId(),text);
+        			this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
+        			subStage += 1;
+        		}break;
+        		case 2:{
+        			currentUser.setGender(text.charAt(0));
+        			this.replyText(replyToken, "Please enter your height in cm:");
+        			subStage+=1;
+        		}break;
+        		case 3:{
+        			currentUser.setHeight(Integer.parseInt(text));
+        			this.replyText(replyToken, "Please enter your weight in kg:");
+        			subStage+=1;
+        		}break;
+        		case 4:{
+        			currentUser.setWeight(Integer.parseInt(text));
+        			this.replyText(replyToken, "Your data has been recorded.\n Type any key to our main menu.");
+        			currentStage = "Main";
+        			subStage = 0;
+        		}break;
+        		default:{
+        			log.info("Stage error.");
+        		}
+        		}
+        	}
+        	case "Main":{
+        		String msg = "Welcome to ZK's Diet Planner!\n\n"
+        				+ "We provide serveral functions for you to keep your fitness."
+        				+ "Please type the number of function you wish to use. :)\n\n"
+        				+ "1 Diet Planner \n"
+        				+ "2 Healthpedia \n"
+        				+ "3 Feedback \n"
+        				+ "4 User Guide(recommended for first-time users)\n\n"
+        				+ "Please enter your choice:";
+        		this.replyText(replyToken, msg);
+        	}
+        	default:{
+        		log.info("Got text message from {}: {}", replyToken, text);
+                switch (text) {
+                    case "profile": {
+                        String userId = event.getSource().getUserId();
+                        if (userId != null) {
+                            lineMessagingClient
+                                    .getProfile(userId)
+                                    .whenComplete(new ProfileGetter (this, replyToken));
+                        } else {
+                            this.replyText(replyToken, "Bot can't use profile API without user ID");
+                        }
+                        break;
+                    }
+                    case "confirm": {
+                        ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+                                "Do it?",
+                                new MessageAction("Yes", "Yes!"),
+                                new MessageAction("No", "No!")
+                        );
+                        TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
+                        this.reply(replyToken, templateMessage);
+                        break;
+                    }
+                    case "carousel": {
+                        String imageUrl = createUri("/static/buttons/1040.jpg");
+                        CarouselTemplate carouselTemplate = new CarouselTemplate(
+                                Arrays.asList(
+                                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+                                                new URIAction("Go to line.me",
+                                                              "https://line.me"),
+                                                new PostbackAction("Say hello1",
+                                                                   "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�")
+                                        )),
+                                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+                                                new PostbackAction("癡穡� hello2",
+                                                                   "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�",
+                                                                   "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�"),
+                                                new MessageAction("Say message",
+                                                                  "Rice=癟簣糧")
+                                        ))
+                                ));
+                        TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+                        this.reply(replyToken, templateMessage);
+                        break;
+                    }
 
-        log.info("Got text message from {}: {}", replyToken, text);
-        switch (text) {
-            case "profile": {
-                String userId = event.getSource().getUserId();
-                if (userId != null) {
-                    lineMessagingClient
-                            .getProfile(userId)
-                            .whenComplete(new ProfileGetter (this, replyToken));
-                } else {
-                    this.replyText(replyToken, "Bot can't use profile API without user ID");
+                    default:
+                    	String reply = null;
+                    	try {
+                    		reply = database.search(text);
+                    	} catch (Exception e) {
+                    		reply = text;
+                    	}
+                        log.info("Returns echo message {}: {}", replyToken, reply);
+                        this.replyText(
+                                replyToken,
+                                itscLOGIN + " says " + reply
+                        );
+                        break;
                 }
-                break;
-            }
-            case "confirm": {
-                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-                        "Do it?",
-                        new MessageAction("Yes", "Yes!"),
-                        new MessageAction("No", "No!")
-                );
-                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-                this.reply(replyToken, templateMessage);
-                break;
-            }
-            case "carousel": {
-                String imageUrl = createUri("/static/buttons/1040.jpg");
-                CarouselTemplate carouselTemplate = new CarouselTemplate(
-                        Arrays.asList(
-                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                        new URIAction("Go to line.me",
-                                                      "https://line.me"),
-                                        new PostbackAction("Say hello1",
-                                                           "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�")
-                                )),
-                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                        new PostbackAction("癡穡� hello2",
-                                                           "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�",
-                                                           "hello 瓊嚙賤�����嚙蝓姻�嚙蝓￣�嚙蝓�"),
-                                        new MessageAction("Say message",
-                                                          "Rice=癟簣糧")
-                                ))
-                        ));
-                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-                this.reply(replyToken, templateMessage);
-                break;
-            }
-
-            default:
-            	String reply = null;
-            	try {
-            		reply = database.search(text);
-            	} catch (Exception e) {
-            		reply = text;
-            	}
-                log.info("Returns echo message {}: {}", replyToken, reply);
-                this.replyText(
-                        replyToken,
-                        itscLOGIN + " says " + reply
-                );
-                break;
+        		
+        	}
         }
+            
     }
 
 	static String createUri(String path) {
