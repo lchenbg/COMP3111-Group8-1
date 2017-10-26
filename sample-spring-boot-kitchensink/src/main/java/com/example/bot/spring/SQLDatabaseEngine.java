@@ -31,6 +31,8 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		} catch (Exception e) {
 			System.out.println(e);
 		} 
+		log.info("XXXXXXXXXXXXXX");
+		log.info(result[0]);
 		if(result[0] != null)	{
 			Users getuser = new Users(result[0],result[1]);
 			getuser.setGender(result[2].charAt(0));
