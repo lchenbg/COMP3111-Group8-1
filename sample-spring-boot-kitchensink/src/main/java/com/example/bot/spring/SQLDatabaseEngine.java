@@ -14,7 +14,7 @@ import java.net.URI;
 public class SQLDatabaseEngine extends DatabaseEngine {
 
 	Users searchUser(String uidkey) throws Exception {
-		String result[] = new result[5];
+		String result[] = new String[5];
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
