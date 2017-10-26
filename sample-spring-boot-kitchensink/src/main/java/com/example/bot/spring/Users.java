@@ -34,11 +34,5 @@ public class Users {
 				+"\"height\":\"" + height + "\", "
 				+"\"bodyfat\":\"" + bodyFat + "\" ";
 	}
-	
-	
-	public static void main(String [] args) {
-		Users u = new Users("20308367","Charles");
-		System.out.println(u);
-	}
-	
+
 }

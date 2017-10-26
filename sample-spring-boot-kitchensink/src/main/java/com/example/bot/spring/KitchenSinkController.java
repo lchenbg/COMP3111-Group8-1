@@ -220,6 +220,7 @@ public class KitchenSinkController {
         String text = content.getText();
        
         switch(currentStage) {
+        	
         	case "Init": {
         		switch(subStage) {	
         		case 0:{
@@ -255,7 +256,8 @@ public class KitchenSinkController {
         			log.info("Stage error.");
         		}
         		}
-        	}
+        	}break;
+        	/////////////////////////////////////////////////////////////////
         	case "Main":{
         		String msg = "Welcome to ZK's Diet Planner!\n\n"
         				+ "We provide serveral functions for you to keep your fitness."
@@ -266,7 +268,8 @@ public class KitchenSinkController {
         				+ "4 User Guide(recommended for first-time users)\n\n"
         				+ "Please enter your choice:";
         		this.replyText(replyToken, msg);
-        	}
+        	}break;
+        	///////////////////////////////////////////////////////////////////
         	default:{
         		log.info("Got text message from {}: {}", replyToken, text);
                 switch (text) {
