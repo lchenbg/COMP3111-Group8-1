@@ -41,9 +41,8 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		throw new Exception("NOT FOUND");
 	}
 
-	int pushUser(Users user) {
-		String result = null;
-		int row = 0;
+	boolean pushUser(Users user) {
+		boolean result = false;
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
@@ -54,14 +53,14 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			stmt.setString(2, temp) ;
 			stmt.setString(3, String.valueOf(user.getHeight()));
 			stmt.setString(4, String.valueOf(user.getWeight()));
-		    row = stmt.executeUpdate();
+		    result = stmt.execute();
 			stmt.close();
 			connection.close();
 		} catch (Exception e) {
 			System.out.println(e);
-			return 0;
+			return result;
 		} 
-		return row;
+		return result;
 		
 	}
 	
