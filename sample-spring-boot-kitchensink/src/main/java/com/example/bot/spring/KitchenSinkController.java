@@ -292,7 +292,9 @@ public class KitchenSinkController {
         			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
         			currentStage = "Main";
         			subStage = 0;   
-        			database.pushUser(currentUser);
+        			int r = database.pushUser(currentUser);
+        			log.info("XXXXXXXXXXXXXXXXXXXXXXX");
+        			log.info(r);
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
