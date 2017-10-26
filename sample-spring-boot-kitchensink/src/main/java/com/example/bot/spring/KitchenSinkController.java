@@ -236,7 +236,7 @@ public class KitchenSinkController {
         	else {
         		String msg = "I will be deactivated. To reactivate me, please block->unblock me. Bye.";
         		this.replyText(replyToken,msg);
-        		currentStage = "Init";
+        		currentStage = "";
         		subStage = 0;
         		currentUser = null;
         	}
