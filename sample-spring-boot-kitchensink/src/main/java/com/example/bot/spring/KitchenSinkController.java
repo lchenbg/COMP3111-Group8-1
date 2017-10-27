@@ -366,7 +366,9 @@ public class KitchenSinkController {
 		}break;
 		default:break;
 		}*/
-		currentStage = "Main"; subStage = 0; //to be replaced
+		this.replyText(replyToken, "All set. Type anything to return to main menu...");
+		currentStage = "Main";//back to main 
+		subStage = 0; 
 	}
 	private void dietPlannerHandler(String replyToken, Event event, String text) {
 		/*switch(subStage) {
@@ -376,16 +378,25 @@ public class KitchenSinkController {
 		default:break;
 		}
 		*/
-		currentStage = "Main"; subStage = 0 ;//to be replaced
+		
+		this.replyText(replyToken, "All set. Type anything to return to main menu...");
+		currentStage = "Main";//back to main 
+		subStage = 0; 
 	}
 	private void healthPediaHandler(String replyToken, Event event, String text) {
-		currentStage = "Main"; subStage = 0; //to be replaced
+		this.replyText(replyToken, "All set. Type anything to return to main menu...");
+		currentStage = "Main";//back to main 
+		subStage = 0; 
 	}
 	private void feedBackHandler(String replyToken, Event event, String text) {
-		currentStage = "Main"; subStage = 0; //to be replaced
+		this.replyText(replyToken, "All set. Type anything to return to main menu...");
+		currentStage = "Main";//back to main 
+		subStage = 0; 
 	}
 	private void userGuideHandler(String replyToken, Event event, String text) {
-		currentStage = "Main"; subStage = 0; //to be replaced
+		this.replyText(replyToken, "All set. Type anything to return to main menu...");
+		currentStage = "Main";//back to main 
+		subStage = 0; 
 	}
 	
 	
@@ -415,8 +426,6 @@ public class KitchenSinkController {
         		userGuideHandler(replyToken, event, text);
         		break;
         	default:
-        		log.info("XXXXXXXXXXXXXXXXXXXXXXXXX");
-        		log.info(currentStage);
         		String msg = "I am deactivated. To reactivate me, please block->unblock me.";
         		this.replyText(replyToken, msg);
         		break;
