@@ -557,16 +557,22 @@ public class KitchenSinkController {
 			try {
 				if( Integer.parseInt(text) < 16 && Integer.parseInt(text)>= 0 ) {
 					((DetailedUser)currentUser).setExercise(Integer.parseInt(text));
-					this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
-					database.pushDetailedUser(currentUser);
-					currentStage = "Main";//back to main 
-					subStage =0;   
+					this.replyText(replyToken, "Any other infomation about your body you wish to let us know?(in 1000 characters)");
+					subStage +=1;   
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
 				}
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter integer numbers!!");}
 		}break;
+		case 13:{
+			((DetailedUser)currentUser).setOtherInfo(text);
+			database.pushDetailedUser(currentUser);
+			this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
+			currentStage = "Main";//back to main 
+			subStage =0;  
+		}break;
+		
 		default:
 			break;
 		}

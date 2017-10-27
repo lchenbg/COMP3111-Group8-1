@@ -45,7 +45,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
-					"SELECT * FROM detaileduser WHERE id=(?)");
+					"SELECT * FROM detailedusers WHERE id=(?)");
 			stmt.setString(1,user.getID());
 			ResultSet rs = stmt.executeQuery();
             
@@ -59,6 +59,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 				((DetailedUser)user).setVegfruit(rs.getDouble(7));
 				Array sqlArray = rs.getArray(8);
 				((DetailedUser)user).setEatingHabits((boolean[])sqlArray.getArray());
+				((DetailedUser)user).setOtherInfo(rs.getString(9));
 			} 
 			rs.close();
 			stmt.close();
@@ -100,7 +101,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
-					"INSERT INTO detaileduser VALUES(?,?,?,?,?,?,?,?)");
+					"INSERT INTO detailedusers VALUES(?,?,?,?,?,?,?,?,?)");
 			stmt.setString(1,user.getID());
 			stmt.setInt(2, ((DetailedUser)user).getExercise());
 			stmt.setDouble(3, ((DetailedUser)user).getBodyFat());
@@ -113,6 +114,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			for(int i = 0 ; i < h.length ; i++) b[i] = new Boolean(h[i]);
 			Array sqlArray = connection.createArrayOf("bool",b);
 			stmt.setArray(8,sqlArray);
+			stmt.setString(9,((DetailedUser)user).getOtherInfo());
 			result = stmt.execute();
 			stmt.close();
 			connection.close();

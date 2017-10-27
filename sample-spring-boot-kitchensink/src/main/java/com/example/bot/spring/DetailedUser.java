@@ -9,7 +9,7 @@ public class DetailedUser extends Users{
     private double proteinConsump = 0; //in g
     private double vegfruitConsump = 0; // in servings
     private boolean[] eatingHabits = {false,false,false,false,false,false};//eatBF,eatLunch,eatAFT,eatDinner,eatMS, eatMore 
-    private String otherinfomation  = "";
+    private String otherInfo  = "";
 	
     public DetailedUser(Users u) {
     	super(u);
@@ -26,6 +26,7 @@ public class DetailedUser extends Users{
 		for(int i = 0; i < h.length ; i++) 
 			eatingHabits[i] = h[i];
 	}
+	public void setOtherInfo(String s) {otherInfo = s;}
 	public int getExercise() {return amountOfExercise;}
 	public double getBodyFat() {return bodyFat;}
 	public int getCalories() {return caloriesConsump;}
@@ -33,6 +34,6 @@ public class DetailedUser extends Users{
 	public double getProtein() {return proteinConsump;}
 	public double getVegfruit() {return vegfruitConsump;}
 	public boolean[] getEatingHabits() {return eatingHabits;}
-	
+	public String getOtherInfo() {return otherInfo;}
 	
 }
