@@ -365,7 +365,7 @@ public class KitchenSinkController {
 		switch(subStage) {
 		case 0:{
 			currentUser = new DetailedUser(currentUser);
-			this.replyText(replyToken, "Please tell us your body fat:\n");
+			this.replyText(replyToken, "Please tell us your body fat:(in %)");
 			subStage +=1;
 		}break;
 		case 1:{
@@ -396,7 +396,7 @@ public class KitchenSinkController {
 			try {
 				if( Double.parseDouble(text) < 3000 && Double.parseDouble(text)> 0 ) {
 					((DetailedUser)currentUser).setCarbs(Double.parseDouble(text));
-        			this.replyText(replyToken, "Please tell us your average daily protein consumption(in kcal):");
+        			this.replyText(replyToken, "Please tell us your average daily protein consumption(roughly in g):");
         			subStage +=1 ;   
         			}
 				else {
@@ -485,12 +485,27 @@ public class KitchenSinkController {
 			else { this.replyText(replyToken, "Do you eat any extra meals?(y/n)"); return;}
 
 			((DetailedUser)currentUser).setEatingHabits(input,5);
-			this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
-			//database.pushAdvancedUser(currentUser);
-			currentStage = "Main";//back to main 
-			subStage = 0; 
+			this.replyText(replyToken, "How many hours per day do you exercise in a weekly average?");
+			subStage += 1; 
 		}break;
-		default:break;
+		case 12:{
+			try {
+				if( Integer.parseInt(text) < 16 && Integer.parseInt(text)>= 0 ) {
+					((DetailedUser)currentUser).setExercise(Integer.parseInt(text));
+					this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
+					database.pushDetailedUser(currentUser);
+					currentStage = "Main";//back to main 
+					subStage =0;   
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter integer numbers!!");}
+		}break;
+		
+		
+		default:
+			break;
 		}
 	}
 	private void dietPlannerHandler(String replyToken, Event event, String text) {
