@@ -314,7 +314,7 @@ public class KitchenSinkController {
 		switch(subStage) {
 		case 0:{
 			String msg = null;
-			if(currentUser instanceof DetailedUser) {
+			if(! (currentUser instanceof DetailedUser)) {
 				msg = "Welcome to ZK's Diet Planner!\n\n"
 				+ "We provide serveral functions for you to keep your fitness."
 				+ "Please type the number of function you wish to use. :)\n\n"
