@@ -334,17 +334,17 @@ public class KitchenSinkController {
 				+ "3 Healthpedia \n"
 				+ "4 Feedback \n"
 				+ "5 User Guide(recommended for first-time users)\n\n"
-				+ "Please enter your choice:(1-4)";
+				+ "Please enter your choice:(1-5)";
 			}else {
 				msg = "Welcome to ZK's Diet Planner!\n\n"
 						+ "We provide serveral functions for you to keep your fitness."
 						+ "Please type the number of function you wish to use. :)\n\n"
-						+ "1 Living Habit Collector (edit)\n"
+						+ "1 Living Habot Editor\n"
 						+ "2 Diet Planner\n"
 						+ "3 Healthpedia \n"
 						+ "4 Feedback \n"
 						+ "5 User Guide(recommended for first-time users)\n\n"
-						+ "Please enter your choice:(1-4)";
+						+ "Please enter your choice:(1-5)";
 			}
 			this.replyText(replyToken, msg);
 			subStage+=1;
@@ -358,12 +358,12 @@ public class KitchenSinkController {
 				msg = "Wellcome to Living Habit Collector! You can edit or input more detailed information"
 						+ "about yourself. This can help us make a more precise suggestion for you!\n"
 						+ "please follow the instructions below (type any to continue)";
-				if(!(currentUser instanceof DetailedUser)) {//////////////!
+				if(!(currentUser instanceof DetailedUser)) {
 					currentStage = "LivingHabitCollector";
 					subStage = 0;
 				}else {
-					currentStage = "LivingHabitCollector";
-					subStage = 13;
+					currentStage = "LivingHabitEditor";
+					subStage = 0;
 				}
 			}break;
 			case "2":{
@@ -397,9 +397,37 @@ public class KitchenSinkController {
 		}
 	}
 	
+	private void livingHabitCollectorEditor(String replyToken, Event event, String text) {
+		switch(subStage) {
+		case 0:{
+			this.replyText(replyToken, "Looks like you have already input your data. "
+											+ "Do you wish to edit it? Please type the choice you wish to edit below:\n\n"
+											+ "1 Edit Age\n"
+											+ "2 Edit Name\n"
+											+ "3 Edit Weight\n"
+											+ "4 Edit Height\n"
+											+ "5 Edit Bodyfat\n"
+											+ "6 Edit Exercise Amount\n"
+											+ "7 Edit Calories Consumption\n"
+											+ "8 Edit Carbohydrate Consumption\n"
+											+ "9 Edit Vegtable/Fruit Consumption \n"
+											+ "10 Edit Deiting Habits\n"
+											+ "11 Edit Other Information about you\n"
+											+ "type other things to back to menu");
+			subStage +=1;
+		}break;
+		case 1:{
+			this.replyText(replyToken, "All changed recorded. Type anything to return to main menu.");
+			database.pushDetailedUser(currentUser);
+			currentStage = "Main";//back to main 
+			subStage =0; 
+		}break;
+		default:break;
+		}
+	}
 	
 	private void livingHabitCollectorHandler(String replyToken, Event event, String text) {
-		switch(subStage) {
+		switch(subStage){
 		case 0:{
 			currentUser = new DetailedUser(currentUser);
 			this.replyText(replyToken, "Please tell us your body fat:(in %)");
@@ -539,27 +567,6 @@ public class KitchenSinkController {
 				}
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter integer numbers!!");}
 		}break;
-		case 13:{
-			this.replyText(replyToken, "Looks like you have already input your data. "
-					+ "Do you wish to edit it? Please type the choice you wish to edit below:\n\n"
-					+ "1 Edit Age\n"
-					+ "2 Edit Name\n"
-					+ "3 Edit Weight\n"
-					+ "4 Edit Height\n"
-					+ "5 Edit Bodyfat\n"
-					+ "6 Edit Exercise Amount\n"
-					+ "7 Edit Calories Consumption\n"
-					+ "8 Edit Carbohydrate Consumption\n"
-					+ "9 Edit Vegtable/Fruit Consumption \n"
-					+ "10 Edit Deiting Habits\n"
-					+ "11 Edit Other Information about you\n"
-					+ "type other things to back to menu");
-			subStage +=1;
-		}break;
-		case 14:{
-			currentStage = "Main";//back to main 
-			subStage =0;
-		}break;
 		default:
 			break;
 		}
@@ -606,7 +613,9 @@ public class KitchenSinkController {
         		break;
         	case "LivingHabitCollector":
         		livingHabitCollectorHandler(replyToken, event, text);
-        		
+        		break;
+        	case "LivingHabitEditor":
+        		livingHabitCollectorEditor(replyToken, event, text);
         		break;
         	case "DietPlanner":
         		dietPlannerHandler(replyToken, event, text);

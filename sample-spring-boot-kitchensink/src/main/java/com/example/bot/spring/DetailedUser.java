@@ -9,6 +9,7 @@ public class DetailedUser extends Users{
     private double proteinConsump = 0; //in g
     private double vegfruitConsump = 0; // in servings
     private boolean[] eatingHabits = {false,false,false,false,false,false};//eatBF,eatLunch,eatAFT,eatDinner,eatMS, eatMore 
+    private String otherinfomation  = "";
 	
     public DetailedUser(Users u) {
     	super(u);
