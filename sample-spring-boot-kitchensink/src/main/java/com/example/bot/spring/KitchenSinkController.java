@@ -366,6 +366,7 @@ public class KitchenSinkController {
 		}break;
 		default:break;
 		}*/
+		currentStage = "Main"; subStage = 0 //to be replaced
 	}
 	private void dietPlannerHandler(String replyToken, Event event, String text) {
 		/*switch(subStage) {
@@ -375,10 +376,17 @@ public class KitchenSinkController {
 		default:break;
 		}
 		*/
+		currentStage = "Main"; subStage = 0 //to be replaced
 	}
-	private void healthPediaHandler(String replyToken, Event event, String text) {}
-	private void feedBackHandler(String replyToken, Event event, String text) {}
-	private void userGuideHandler(String replyToken, Event event, String text) {}
+	private void healthPediaHandler(String replyToken, Event event, String text) {
+		currentStage = "Main"; subStage = 0 //to be replaced
+	}
+	private void feedBackHandler(String replyToken, Event event, String text) {
+		currentStage = "Main"; subStage = 0 //to be replaced
+	}
+	private void userGuideHandler(String replyToken, Event event, String text) {
+		currentStage = "Main"; subStage = 0 //to be replaced
+	}
 	
 	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
