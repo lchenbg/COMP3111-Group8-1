@@ -170,9 +170,15 @@ public class KitchenSinkController {
 		String msgbuffer = null;
 		try{
 			currentUser = database.searchUser(event.getSource().getUserId());
-			currentStage = "Main";
-			subStage = 0;
-			msgbuffer = "User data reloaded. Type anything to continue...";
+			try {
+				currentUser = database.searchDetailedUser(currentUser);
+			}catch(Exception e) {
+				log.info(e.getMessage());
+			}finally {
+				currentStage = "Main";
+				subStage = 0;
+				msgbuffer = "User data reloaded. Type anything to continue...";
+			}
 		}catch(Exception e){
 			msgbuffer = "Welcome!!\nTo start using our services, please follow the instructions below.\n\n"
 					+ "Create Personal Diet Tracker: type \'1\'\n\n"
@@ -307,17 +313,31 @@ public class KitchenSinkController {
 	private void mainStageHandler(String replyToken, Event event, String text) {
 		switch(subStage) {
 		case 0:{
-			String msg = "Welcome to ZK's Diet Planner!\n\n"
+			String msg = null;
+			if(currentUser instanceof DetailedUser) {
+				msg = "Welcome to ZK's Diet Planner!\n\n"
 				+ "We provide serveral functions for you to keep your fitness."
 				+ "Please type the number of function you wish to use. :)\n\n"
-				+ "1 Living Habit Collector\n"
-				+ "2 Diet Planner(Please complete 1)\n"
+				+ "1 Living Habit Collector (INSERT YOUR DATA HERE)\n"
+				+ "2 Diet Planner(Please complete 1 first)\n"
 				+ "3 Healthpedia \n"
 				+ "4 Feedback \n"
 				+ "5 User Guide(recommended for first-time users)\n\n"
 				+ "Please enter your choice:(1-4)";
+			}else {
+				msg = "Welcome to ZK's Diet Planner!\n\n"
+						+ "We provide serveral functions for you to keep your fitness."
+						+ "Please type the number of function you wish to use. :)\n\n"
+						+ "1 Living Habit Collector (edit)\n"
+						+ "2 Diet Planner\n"
+						+ "3 Healthpedia \n"
+						+ "4 Feedback \n"
+						+ "5 User Guide(recommended for first-time users)\n\n"
+						+ "Please enter your choice:(1-4)";
+			}
 			this.replyText(replyToken, msg);
 			subStage+=1;
+			
 		}break;
 		case 1:{
 			String msg = null;

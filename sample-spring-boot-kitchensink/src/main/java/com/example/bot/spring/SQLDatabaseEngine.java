@@ -41,7 +41,6 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	}
 
 	Users searchDetailedUser(Users user) throws Exception {
-		
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
@@ -50,6 +49,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			ResultSet rs = stmt.executeQuery();
             
 			while(rs.next()) {	
+				user = new DetailedUser(user);
 				((DetailedUser)user).setExercise(rs.getInt(2)) ;
 				((DetailedUser)user).setBodyFat(rs.getDouble(3)); 
 				((DetailedUser)user).setCalories(rs.getInt(4));
