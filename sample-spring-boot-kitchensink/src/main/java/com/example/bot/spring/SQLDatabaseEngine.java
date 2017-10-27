@@ -98,7 +98,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
-					"INSERT INTO users VALUES(?,?,?,?,?,?,?,?)");
+					"INSERT INTO detaileduser VALUES(?,?,?,?,?,?,?,?)");
 			stmt.setString(1,user.getID());
 			stmt.setInt(2, ((DetailedUser)user).getExercise());
 			stmt.setDouble(3, ((DetailedUser)user).getBodyFat());
