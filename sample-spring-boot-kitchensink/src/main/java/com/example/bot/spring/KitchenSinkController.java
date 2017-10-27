@@ -293,8 +293,20 @@ public class KitchenSinkController {
 		}break;
 		case 4:{
 			try {
-				if( Double.parseDouble(text) < 300 && Double.parseDouble(text)> 0 ) {
-        			currentUser.setWeight(Double.parseDouble(text));
+				if( Double.parseDouble(text) < 260 && Double.parseDouble(text)> 50 ) {
+					currentUser.setWeight(Double.parseDouble(text));
+					this.replyText(replyToken, "Please enter your age in years old:");
+					subStage+=1;
+				}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 5:{
+			try {
+				if( Integer.parseInt(text) < 150 && Integer.parseInt(text)> 7 ) {
+        			currentUser.setAge(Integer.parseInt(text));
         			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
         			currentStage = "Main";
         			subStage = 0;   
@@ -304,7 +316,6 @@ public class KitchenSinkController {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
 				}
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
-
 		}break;
 		default:{log.info("Stage error.");}
 		}
@@ -347,8 +358,13 @@ public class KitchenSinkController {
 				msg = "Wellcome to Living Habit Collector! You can edit or input more detailed information"
 						+ "about yourself. This can help us make a more precise suggestion for you!\n"
 						+ "please follow the instructions below (type any to continue)";
-				currentStage = "LivingHabitCollector";
-				subStage = 0;
+				if((currentUser instanceof DetailedUser)) {//////////////!
+					currentStage = "LivingHabitCollector";
+					subStage = 0;
+				}else {
+					currentStage = "LivingHabitCollector";
+					subStage = 13;
+				}
 			}break;
 			case "2":{
 				//move to diet planner
@@ -380,7 +396,8 @@ public class KitchenSinkController {
 		}break;
 		}
 	}
-
+	
+	
 	private void livingHabitCollectorHandler(String replyToken, Event event, String text) {
 		switch(subStage) {
 		case 0:{
@@ -522,6 +539,23 @@ public class KitchenSinkController {
 				}
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter integer numbers!!");}
 		}break;
+		case 13:{
+			this.replyText(replyToken, "Looks like you have already input your data. "
+					+ "Do you wish to edit it? Please type the choice you wish to edit below:\n\n"
+					+ "1 Edit Age\n"
+					+ "2 Edit Name\n"
+					+ "3 Edit Weight\n"
+					+ "4 Edit Height\n"
+					+ "5 Edit Bodyfat\n"
+					+ "6 Edit Exercise Amount\n"
+					+ "7 Edit Calories Consumption\n"
+					+ "8 Edit Carbohydrate Consumption\n"
+					+ "9 Edit Vegtable/Fruit Consumption \n"
+					+ "10 Edit Deiting Habits\n"
+					+ "11 Edit Other Information about you\n"
+					+ "type other things to back to menu");
+			subStage +=1;
+		}break;
 		
 		
 		default:
@@ -570,6 +604,7 @@ public class KitchenSinkController {
         		break;
         	case "LivingHabitCollector":
         		livingHabitCollectorHandler(replyToken, event, text);
+        		
         		break;
         	case "DietPlanner":
         		dietPlannerHandler(replyToken, event, text);

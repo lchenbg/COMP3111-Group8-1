@@ -27,6 +27,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 				user.setGender(rs.getString(3).charAt(0));
 				user.setHeight(rs.getDouble(4));
 				user.setWeight(rs.getDouble(5));
+				user.setAge(rs.getInt(6));
 			} 
 			rs.close();
 			stmt.close();
@@ -76,13 +77,14 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
-					"INSERT INTO users VALUES(?,?,?,?,?)");
+					"INSERT INTO users VALUES(?,?,?,?,?,?)");
 			stmt.setString(1, user.getID());
 			stmt.setString(2, user.getName());
 			String temp = ""+user.getGender();
 			stmt.setString(3, temp) ;
 			stmt.setDouble(4, user.getHeight());
 			stmt.setDouble(5, user.getWeight());
+			stmt.setInt(6, user.getAge());
 		    result = stmt.execute();
 			stmt.close();
 			connection.close();
