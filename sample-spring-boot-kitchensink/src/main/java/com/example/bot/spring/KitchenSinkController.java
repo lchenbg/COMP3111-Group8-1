@@ -358,7 +358,7 @@ public class KitchenSinkController {
 				msg = "Wellcome to Living Habit Collector! You can edit or input more detailed information"
 						+ "about yourself. This can help us make a more precise suggestion for you!\n"
 						+ "please follow the instructions below (type any to continue)";
-				if((currentUser instanceof DetailedUser)) {//////////////!
+				if(!(currentUser instanceof DetailedUser)) {//////////////!
 					currentStage = "LivingHabitCollector";
 					subStage = 0;
 				}else {
@@ -556,7 +556,10 @@ public class KitchenSinkController {
 					+ "type other things to back to menu");
 			subStage +=1;
 		}break;
-		
+		case 14:{
+			currentStage = "Main";//back to main 
+			subStage =0;
+		}
 		
 		default:
 			break;
