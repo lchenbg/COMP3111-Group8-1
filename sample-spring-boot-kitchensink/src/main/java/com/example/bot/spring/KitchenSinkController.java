@@ -407,6 +407,8 @@ public class KitchenSinkController {
         		userGuideHandler(replyToken, event, text);
         		break;
         	default:
+        		log.info("XXXXXXXXXXXXXXXXXXXXXX");
+        		log.info(currentStage);
         		String msg = "I am deactivated. To reactivate me, please block->unblock me.";
         		this.replyText(replyToken, msg);
         		break;
