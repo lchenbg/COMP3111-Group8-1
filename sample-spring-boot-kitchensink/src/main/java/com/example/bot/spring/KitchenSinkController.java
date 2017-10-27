@@ -559,8 +559,7 @@ public class KitchenSinkController {
 		case 14:{
 			currentStage = "Main";//back to main 
 			subStage =0;
-		}
-		
+		}break;
 		default:
 			break;
 		}
