@@ -324,7 +324,9 @@ public class KitchenSinkController {
 			switch(text) {
 			case "1":{
 				//move to diet planner
-				msg = "Moving to Living Habit Collector...Input anything to continue...";
+				msg = "Wellcome to Living Habit Collector! You can edit or input more detailed information"
+						+ "about yourself. This can help us make a more precise suggestion for you!\n"
+						+ "please follow the instructions below (type any to continue)";
 				currentStage = "LivingHabitCollector";
 				subStage = 0;
 			}break;
@@ -360,15 +362,136 @@ public class KitchenSinkController {
 	}
 
 	private void livingHabitCollectorHandler(String replyToken, Event event, String text) {
-		/*switch(subStage) {
+		switch(subStage) {
 		case 0:{
-			
+			currentUser = new DetailedUser(currentUser);
+			this.replyText(replyToken, "Please tell us your body fat:\n");
+			subStage +=1;
+		}break;
+		case 1:{
+			try {
+				if( Double.parseDouble(text) < 80 && Double.parseDouble(text)> 1 ) {
+        			((DetailedUser)currentUser).setBodyFat(Double.parseDouble(text));
+        			this.replyText(replyToken, "Please tell us your average daily calories consumption(in kcal):");
+        			subStage +=1 ;   
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 2:{
+			try {
+				if( Integer.parseInt(text) < 15000 && Integer.parseInt(text)> 0 ) {
+					((DetailedUser)currentUser).setCalories(Integer.parseInt(text));
+        			this.replyText(replyToken, "Please tell us your average daily carbohydrates consumption(roughly in g):");
+        			subStage +=1 ;   
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 3:{
+			try {
+				if( Double.parseDouble(text) < 3000 && Double.parseDouble(text)> 0 ) {
+					((DetailedUser)currentUser).setCarbs(Double.parseDouble(text));
+        			this.replyText(replyToken, "Please tell us your average daily protein consumption(in kcal):");
+        			subStage +=1 ;   
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 4:{
+			try {
+				if( Double.parseDouble(text) < 1000 && Double.parseDouble(text)> 0 ) {
+					((DetailedUser)currentUser).setProtein(Double.parseDouble(text));
+        			this.replyText(replyToken, "Please tell us your average daily vegetable/fruit consumption(in serving):");
+        			subStage +=1 ;   
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 5:{
+			try {
+				if( Double.parseDouble(text) < 50 && Double.parseDouble(text)> 0 ) {
+					((DetailedUser)currentUser).setVegfruit(Double.parseDouble(text));
+        			this.replyText(replyToken, "Do you eat breakfast?(y/n)");
+        			subStage +=1 ;   
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 6:{
+			boolean input = false;
+			if (text.charAt(0)=='y' || text.charAt(0)=='Y') input = true;
+			else if( text.charAt(0)=='n'|| text.charAt(0)=='N') input = false;
+			else { this.replyText(replyToken, "Do you eat breakfast?(y/n)"); return;}
+
+			((DetailedUser)currentUser).setEatingHabits(input,2);
+			this.replyText(replyToken, "Do you eat lunch?(y/n)");
+			subStage +=1;
+		}break;
+		case 7:{
+			boolean input = false;
+			if (text.charAt(0)=='y' ||  text.charAt(0)=='Y') input = true;
+			else if( text.charAt(0)=='n'|| text.charAt(0)=='n') input = false;
+			else { this.replyText(replyToken, "Do you eat lunch?(y/n)"); return;}
+
+			((DetailedUser)currentUser).setEatingHabits(input,2);
+			this.replyText(replyToken, "Do you eat afternoon tea?(y/n)");
+			subStage +=1;
+		}break;
+		case 8:{
+			boolean input = false;
+			if (text.charAt(0)=='y' ||  text.charAt(0)=='Y') input = true;
+			else if( text.charAt(0)=='n'|| text.charAt(0)=='N') input = false;
+			else { this.replyText(replyToken, "Do you eat afternoon tea?(y/n)"); return;}
+
+			((DetailedUser)currentUser).setEatingHabits(input,2);
+			this.replyText(replyToken, "Do you eat dinner?(y/n)");
+			subStage +=1;
+		}break;
+		case 9:{
+			boolean input = false;
+			if (text.charAt(0)=='y' ||  text.charAt(0)=='Y') input = true;
+			else if( text.charAt(0)=='n'|| text.charAt(0)=='N') input = false;
+			else { this.replyText(replyToken, "Do you eat dinner?(y/n)"); return;}
+
+			((DetailedUser)currentUser).setEatingHabits(input,3);
+			this.replyText(replyToken, "Do you eat midnight snacks?(y/n)");
+			subStage +=1;
+		}break;
+		case 10:{
+			boolean input = false;
+			if (text.charAt(0)=='y' ||  text.charAt(0)=='Y') input = true;
+			else if( text.charAt(0)=='n'|| text.charAt(0)=='N') input = false;
+			else { this.replyText(replyToken, "Do you eat midnight snacks?(y/n)"); return;}
+
+			((DetailedUser)currentUser).setEatingHabits(input,4);
+			this.replyText(replyToken, "Do you eat any extra meals?(y/n)");
+			subStage +=1;
+		}break;
+		case 11:{
+			boolean input = false;
+			if (text.charAt(0)=='y' ||  text.charAt(0)=='Y') input = true;
+			else if( text.charAt(0)=='n'|| text.charAt(0)=='N') input = false;
+			else { this.replyText(replyToken, "Do you eat any extra meals?(y/n)"); return;}
+
+			((DetailedUser)currentUser).setEatingHabits(input,5);
+			this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
+			//database.pushAdvancedUser(currentUser);
+			currentStage = "Main";//back to main 
+			subStage = 0; 
 		}break;
 		default:break;
-		}*/
-		this.replyText(replyToken, "All set. Type anything to return to main menu...");
-		currentStage = "Main";//back to main 
-		subStage = 0; 
+		}
 	}
 	private void dietPlannerHandler(String replyToken, Event event, String text) {
 		/*switch(subStage) {

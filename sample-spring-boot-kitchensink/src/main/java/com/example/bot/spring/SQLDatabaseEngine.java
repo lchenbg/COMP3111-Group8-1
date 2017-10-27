@@ -59,8 +59,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			System.out.println(e);
 			return result;
 		} 
-		return result;
-		
+		return result;	
 	}
 	
 	
