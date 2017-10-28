@@ -124,6 +124,56 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		} 
 		return result;	
 	}
+	boolean updateUser(Users user) {
+		boolean result = false;
+		
+		try {
+			Connection connection = this.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(
+					"UPDATE users SET name = ?, gender = ?, height = ?, weight =?, age =? WHERE id = ?;");
+			stmt.setString(6, user.getID());
+			stmt.setString(1, user.getName());
+			String temp = ""+user.getGender();
+			stmt.setString(2, temp) ;
+			stmt.setDouble(3, user.getHeight());
+			stmt.setDouble(4, user.getWeight());
+			stmt.setInt(5, user.getAge());
+		    result = stmt.execute();
+			stmt.close();
+			connection.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		if(user instanceof DetailedUser) {
+		try {
+			Connection connection = this.getConnection();
+			PreparedStatement stmt = connection.prepareStatement(
+			"UPDATE detailedusers SET amountofexercise=?,bodyfat=?,caloriesconsump=?,carbsconsump=?,proteinconsump=?,vegfruitsonsump=?,"
+			+ "eatinghabits=?,otherinformation = ?,WHERE id = ?");
+			stmt.setInt(1, ((DetailedUser)user).getExercise());
+			stmt.setDouble(2, ((DetailedUser)user).getBodyFat());
+			stmt.setInt(3, ((DetailedUser)user).getCalories());
+			stmt.setDouble(4, ((DetailedUser)user).getCarbs());
+			stmt.setDouble(5, ((DetailedUser)user).getProtein());
+			stmt.setDouble(6, ((DetailedUser)user).getVegfruit());
+			boolean[] h = ((DetailedUser)user).getEatingHabits();
+			Boolean[] b = new Boolean[h.length];
+			for(int i = 0 ; i < h.length ; i++) b[i] = new Boolean(h[i]);
+			Array sqlArray = connection.createArrayOf("bool",b);
+			stmt.setArray(7,sqlArray);
+			stmt.setString(8,((DetailedUser)user).getOtherInfo());
+			stmt.setString(9,user.getID());
+			result = stmt.execute();
+			stmt.close();
+			connection.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return result;
+		} 
+		}
+		return result;	
+	}
 	
 	
 	private Connection getConnection() throws URISyntaxException, SQLException {

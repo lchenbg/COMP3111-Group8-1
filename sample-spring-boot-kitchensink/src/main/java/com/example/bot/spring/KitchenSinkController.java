@@ -398,6 +398,8 @@ public class KitchenSinkController {
 	}
 	
 	private void livingHabitCollectorEditor(String replyToken, Event event, String text) {
+		//int choice = -1;
+		//try {choice = Integer.parseInt(text);}catch(Exception e){log.info(e);}
 		switch(subStage) {
 		case 0:{
 			this.replyText(replyToken, "Looks like you have already input your data. "
@@ -413,18 +415,68 @@ public class KitchenSinkController {
 											+ "9 Edit Vegtable/Fruit Consumption \n"
 											+ "10 Edit Deiting Habits\n"
 											+ "11 Edit Other Information about you\n"
-											+ "type other things to back to menu");
-			subStage +=1;
+											+ "(type other things to back to menu)");
+			subStage =-1;
+		}break;
+		case -1:{ // redirecting stage
+			try{
+				subStage = Integer.parseInt(text);
+				if (subStage >=1 && subStage <= 11) { 
+					this.replyText(replyToken, "Redirecting...type anything to continue.");
+				}
+				else {
+					this.replyText(replyToken, "All changed recorded. Type anything to return to main menu.");
+					//updata db
+					currentStage = "Main";//back to main 
+					subStage =0; 
+				}
+			}catch(Exception e) {
+				this.replyText(replyToken, "All changed recorded. Type anything to return to main menu.");
+				//update db
+				currentStage = "Main";//back to main 
+				subStage =0; 
+			}
+			
 		}break;
 		case 1:{
-			this.replyText(replyToken, "All changed recorded. Type anything to return to main menu.");
-			database.pushDetailedUser(currentUser);
-			currentStage = "Main";//back to main 
-			subStage =0; 
+			this.replyText(replyToken, "Please enter the age you wish to change:");
+			subStage +=20 ; 
 		}break;
+		case 21:{
+			try {
+				if( Integer.parseInt(text) < 150 && Integer.parseInt(text)> 7 ) {
+        			currentUser.setAge(Integer.parseInt(text));
+        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+        			subStage = 0;   
+        			database.updateUser(currentUser);
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		case 6:{
+			this.replyText(replyToken, "Please enter the age you wish to change:");
+			subStage +=20 ; 
+		}break;
+		case 26:{
+			try {
+				if( Integer.parseInt(text) < 16 && Integer.parseInt(text)>= 0 ) {
+        			((DetailedUser)currentUser).setExercise(Integer.parseInt(text));
+        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+        			subStage = 0;   
+        			database.updateUser(currentUser);
+        			}
+				else {
+					this.replyText(replyToken, "Please enter reasonable numbers!");
+				}
+			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		}break;
+		
 		default:break;
 		}
 	}
+
 	
 	private void livingHabitCollectorHandler(String replyToken, Event event, String text) {
 		switch(subStage){
@@ -636,7 +688,7 @@ public class KitchenSinkController {
         		userGuideHandler(replyToken, event, text);
         		break;
         	default:
-        		String msg = "I am deactivated. To reactivate me, please block->unblock me.";
+        		String msg = "Due to some stage error, I am deactivated. To reactivate me, please block->unblock me.";
         		this.replyText(replyToken, msg);
         		break;
         }
