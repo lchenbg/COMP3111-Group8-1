@@ -25,6 +25,11 @@ public class DetailedUser extends Users{
 		for(int i = 0; i < h.length ; i++) 
 			eatingHabits[i] = h[i];
 	}
+	public void setEatingHabits(Boolean[] h)  {
+		for(int i = 0 ; i <h.length ; i++) {
+			eatingHabits[i] = h[i].booleanValue();
+		}
+	}
 	public void setOtherInfo(String s) {otherInfo = s;}
 	public int getExercise() {return amountOfExercise;}
 	public double getBodyFat() {return bodyFat;}
