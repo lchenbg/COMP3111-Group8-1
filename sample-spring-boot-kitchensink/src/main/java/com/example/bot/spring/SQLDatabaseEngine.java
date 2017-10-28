@@ -41,7 +41,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		throw new Exception("NOT FOUND");
 	}
 
-	Users searchDetailedUser(Users user) throws Exception {
+	DetailedUser searchDetailedUser(Users user) throws Exception { //this contains bug
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
@@ -50,16 +50,16 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			ResultSet rs = stmt.executeQuery();
             
 			while(rs.next()) {	
-				user = new DetailedUser(user);
-				((DetailedUser)user).setExercise(rs.getInt(2)) ;
-				((DetailedUser)user).setBodyFat(rs.getDouble(3)); 
-				((DetailedUser)user).setCalories(rs.getInt(4));
-				((DetailedUser)user).setCarbs(rs.getDouble(5)) ;
-				((DetailedUser)user).setProtein(rs.getDouble(6));
-				((DetailedUser)user).setVegfruit(rs.getDouble(7));
+				newuser = new DetailedUser(user);
+				((DetailedUser)newuser).setExercise(rs.getInt(2)) ;
+				((DetailedUser)newuser).setBodyFat(rs.getDouble(3)); 
+				((DetailedUser)newuser).setCalories(rs.getInt(4));
+				((DetailedUser)newuser).setCarbs(rs.getDouble(5)) ;
+				((DetailedUser)newuser).setProtein(rs.getDouble(6));
+				((DetailedUser)newuser).setVegfruit(rs.getDouble(7));
 				Array sqlArray = rs.getArray(8);
-				((DetailedUser)user).setEatingHabits((boolean[])sqlArray.getArray());
-				((DetailedUser)user).setOtherInfo(rs.getString(9));
+				((DetailedUser)newuser).setEatingHabits((boolean[])sqlArray.getArray());
+				((DetailedUser)newuser).setOtherInfo(rs.getString(9));
 			} 
 			rs.close();
 			stmt.close();
@@ -67,8 +67,8 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}
-		if(user != null)	{
-			return user;
+		if(newuser != null)	{
+			return newuser;
 		}
 		throw new Exception("NOT FOUND");
 	}
