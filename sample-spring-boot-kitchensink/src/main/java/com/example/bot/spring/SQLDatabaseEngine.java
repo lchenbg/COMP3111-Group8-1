@@ -60,18 +60,10 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 				newuser.setVegfruit(rs.getDouble(7));
 				
 				/* this contains bug: cannot load array and string*/
+				newuser.setOtherInfo(rs.getString(9));
 				Array sqlArray = rs.getArray(8);
-				newuser.setEatingHabits((boolean[])sqlArray.getArray());                
-				System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
-				log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
+				for(int i = 0 ; i < ((boolean[])sqlArray.getArray()).length ; i++)
+				newuser.setEatingHabits(((boolean[])sqlArray.getArray())[i],i);
 				newuser.setOtherInfo(rs.getString(9));
 			} 
 			rs.close();
