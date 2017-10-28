@@ -60,6 +60,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 				newuser.setVegfruit(rs.getDouble(7));
 				Array sqlArray = rs.getArray(8);
 				newuser.setEatingHabits((boolean[])sqlArray.getArray());
+				log.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXX"+rs.getString(9));
 				newuser.setOtherInfo(rs.getString(9));
 			} 
 			rs.close();
