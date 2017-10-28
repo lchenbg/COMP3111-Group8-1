@@ -42,24 +42,25 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	}
 
 	DetailedUser searchDetailedUser(Users user) throws Exception { //this contains bug
+		DetailedUser newuser = null;
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
 					"SELECT * FROM detailedusers WHERE id=(?)");
 			stmt.setString(1,user.getID());
 			ResultSet rs = stmt.executeQuery();
-			DetailedUser newuser = null;
+			
 			while(rs.next()) {	
 				newuser = new DetailedUser(user);
-				((DetailedUser)newuser).setExercise(rs.getInt(2)) ;
-				((DetailedUser)newuser).setBodyFat(rs.getDouble(3)); 
-				((DetailedUser)newuser).setCalories(rs.getInt(4));
-				((DetailedUser)newuser).setCarbs(rs.getDouble(5)) ;
-				((DetailedUser)newuser).setProtein(rs.getDouble(6));
-				((DetailedUser)newuser).setVegfruit(rs.getDouble(7));
+				newuser.setExercise(rs.getInt(2)) ;
+				newuser.setBodyFat(rs.getDouble(3)); 
+				newuser.setCalories(rs.getInt(4));
+				newuser.setCarbs(rs.getDouble(5)) ;
+				newuser.setProtein(rs.getDouble(6));
+				newuser.setVegfruit(rs.getDouble(7));
 				Array sqlArray = rs.getArray(8);
-				((DetailedUser)newuser).setEatingHabits((boolean[])sqlArray.getArray());
-				((DetailedUser)newuser).setOtherInfo(rs.getString(9));
+				newuser.setEatingHabits((boolean[])sqlArray.getArray());
+				newuser.setOtherInfo(rs.getString(9));
 			} 
 			rs.close();
 			stmt.close();
