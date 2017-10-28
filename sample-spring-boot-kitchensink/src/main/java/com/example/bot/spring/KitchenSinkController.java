@@ -415,6 +415,7 @@ public class KitchenSinkController {
 											+ "9 Edit Protein Consumption\n"
 											+ "10 Edit Vegtable/Fruit Consumption \n"
 											+ "11 Edit Other Information about you\n"
+											+ "12 Show all your states \n"
 											+ "(type other things to back to menu)");
 			subStage =-1;
 		}break;
@@ -613,9 +614,15 @@ public class KitchenSinkController {
 		}break;
 		case 31:{
 			((DetailedUser)currentUser).setOtherInfo(text);
+			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
 			subStage = 0;   
 			database.updateUser(currentUser);
 		}break;
+		case 12:{
+			this.replyText(replyToken,"These are all about your body:\n\n"+ currentUser.toString());
+			subStage = 0;  
+		}break;
+		
 		
 		
 		default:{

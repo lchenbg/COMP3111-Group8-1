@@ -44,11 +44,12 @@ public class Users {
 
 	
 	@Override
-	public String toString() { // this converts user to Json format
-		return "\"name\":\"" + name + "\", "
-				+"\"gender\":\"" + gender + "\", "
-				+"\"weight\":\"" + weight + "\", "
-				+"\"height\":\"" + height + "\" ";
+	public String toString() { 
+		return "Name: " + name + "\n"
+			 + "Gender: " + gender +"\n"
+			 + "Height: " + height +"\n"
+			 + "Weight: " + weight +"\n"
+			 + "Age: " + age +"\n";
 	}
 
 }
