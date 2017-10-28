@@ -422,7 +422,7 @@ public class KitchenSinkController {
 		case -1:{ // redirecting stage
 			try{
 				subStage = Integer.parseInt(text);
-				if (subStage >=1 && subStage <= 11) { 
+				if (subStage >=1 && subStage <= 12) { 
 					this.replyText(replyToken, "Redirecting...type anything to continue.");
 				}
 				else {
