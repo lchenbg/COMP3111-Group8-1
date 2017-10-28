@@ -619,7 +619,7 @@ public class KitchenSinkController {
 			database.updateUser(currentUser);
 		}break;
 		case 12:{
-			this.replyText(replyToken,"These are all about your body:\n\n"+ currentUser.toString());
+			this.replyText(replyToken,"These are all about your body:\n\n" 	+ currentUser.toString());
 			subStage = 0;  
 		}break;
 		
