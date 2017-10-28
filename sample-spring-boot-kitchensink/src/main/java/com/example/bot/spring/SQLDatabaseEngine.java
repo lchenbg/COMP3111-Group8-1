@@ -48,7 +48,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 					"SELECT * FROM detailedusers WHERE id=(?)");
 			stmt.setString(1,user.getID());
 			ResultSet rs = stmt.executeQuery();
-            
+			DetailedUser newuser = null;
 			while(rs.next()) {	
 				newuser = new DetailedUser(user);
 				((DetailedUser)newuser).setExercise(rs.getInt(2)) ;
