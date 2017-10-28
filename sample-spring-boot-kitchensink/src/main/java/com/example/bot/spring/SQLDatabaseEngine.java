@@ -150,7 +150,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
 			"UPDATE detailedusers SET amountofexercise=?,bodyfat=?,caloriesconsump=?,carbsconsump=?,proteinconsump=?,vegfruitsonsump=?,"
-			+ "eatinghabits=?,otherinformation = ?,WHERE id = ?");
+			+ "eatinghabits=?,otherinformation = ? WHERE id = ?");
 			stmt.setInt(1, ((DetailedUser)user).getExercise());
 			stmt.setDouble(2, ((DetailedUser)user).getBodyFat());
 			stmt.setInt(3, ((DetailedUser)user).getCalories());

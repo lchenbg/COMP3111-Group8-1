@@ -456,7 +456,7 @@ public class KitchenSinkController {
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 6:{
-			this.replyText(replyToken, "Please enter the age you wish to change:");
+			this.replyText(replyToken, "Please enter the calories consumption you wish to change:");
 			subStage +=20 ; 
 		}break;
 		case 26:{
