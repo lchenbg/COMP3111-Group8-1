@@ -58,13 +58,12 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 				newuser.setCarbs(rs.getDouble(5)) ;
 				newuser.setProtein(rs.getDouble(6));
 				newuser.setVegfruit(rs.getDouble(7));
-				
+				newuser.setOtherInfo(rs.getString(9));
 				/* this contains bug: cannot load array and string*/
-				newuser.setOtherInfo(rs.getString(9));
 				Array sqlArray = rs.getArray(8);
-				for(int i = 0 ; i < ((boolean[])sqlArray.getArray()).length ; i++)
-				newuser.setEatingHabits(((boolean[])sqlArray.getArray())[i],i);
-				newuser.setOtherInfo(rs.getString(9));
+				newuser.setEatingHabits((boolean[])sqlArray.getArray());                
+				
+				
 			} 
 			rs.close();
 			stmt.close();
