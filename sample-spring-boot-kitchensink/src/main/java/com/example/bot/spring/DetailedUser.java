@@ -43,7 +43,7 @@ public class DetailedUser extends Users{
 			   +"BodyFat(%): "+ Double.toString(bodyFat) + "\n"
 			   +"Calories(kcal/day): "+ Integer.toString(caloriesConsump) + "\n"
 			   +"Carbohydrates(g/day): " + Double.toString(carbsConsump) + "\n"
-			   +"Protein(g/dat): "+ Double.toString(proteinConsump) + "\n"
+			   +"Protein(g/day): "+ Double.toString(proteinConsump) + "\n"
 			   +"Vegtables and Fruit(servings/day): "+ Double.toString(vegfruitConsump) + "\n"
 			   +"Eat Breakfast: "+ Boolean.toString(eatingHabits[0]) +"\n"
 			   +"Eat lunch: "+ Boolean.toString(eatingHabits[1]) +"\n"	
@@ -51,8 +51,7 @@ public class DetailedUser extends Users{
 			   +"Eat dinner: "+ Boolean.toString(eatingHabits[3]) +"\n"
 			   +"Eat midnight snacks: "+ Boolean.toString(eatingHabits[4]) +"\n"
 			   +"More meals: "+ Boolean.toString(eatingHabits[5]) +"\n"
-			   +"Other information: "+ otherInfo + "\n"
-			   ;	
+			   +"Other information: "+ otherInfo ;
 	}
 	
 }

@@ -398,8 +398,7 @@ public class KitchenSinkController {
 	}
 	
 	private void livingHabitCollectorEditor(String replyToken, Event event, String text) {
-		//int choice = -1;
-		//try {choice = Integer.parseInt(text);}catch(Exception e){log.info(e);}
+
 		switch(subStage) {
 		case 0:{
 			this.replyText(replyToken, "Looks like you have already input your data. "
@@ -619,7 +618,7 @@ public class KitchenSinkController {
 			database.updateUser(currentUser);
 		}break;
 		case 12:{
-			this.replyText(replyToken,"These are all about your body:\n\n" 	+ currentUser.toString());
+			this.replyText(replyToken,"These are all about your body:\n\n" 	+ currentUser.toString()+"\nType any to continue.");
 			subStage = 0;  
 		}break;
 		
@@ -708,7 +707,7 @@ public class KitchenSinkController {
 			else if( text.charAt(0)=='n'|| text.charAt(0)=='N') input = false;
 			else { this.replyText(replyToken, "Do you eat breakfast?(y/n)"); return;}
 
-			((DetailedUser)currentUser).setEatingHabits(input,2);
+			((DetailedUser)currentUser).setEatingHabits(input,0);
 			this.replyText(replyToken, "Do you eat lunch?(y/n)");
 			subStage +=1;
 		}break;
@@ -718,7 +717,7 @@ public class KitchenSinkController {
 			else if( text.charAt(0)=='n'|| text.charAt(0)=='n') input = false;
 			else { this.replyText(replyToken, "Do you eat lunch?(y/n)"); return;}
 
-			((DetailedUser)currentUser).setEatingHabits(input,2);
+			((DetailedUser)currentUser).setEatingHabits(input,1);
 			this.replyText(replyToken, "Do you eat afternoon tea?(y/n)");
 			subStage +=1;
 		}break;
