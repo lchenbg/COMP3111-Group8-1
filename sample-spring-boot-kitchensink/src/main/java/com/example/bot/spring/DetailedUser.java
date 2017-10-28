@@ -22,7 +22,6 @@ public class DetailedUser extends Users{
 	public void setVegfruit(double v) {vegfruitConsump = v;}
 	public void setEatingHabits(boolean h, int i) {eatingHabits[i] = h;}
 	public void setEatingHabits(boolean[] h) {
-		assert (h.length == numMeals);
 		for(int i = 0; i < h.length ; i++) 
 			eatingHabits[i] = h[i];
 	}
