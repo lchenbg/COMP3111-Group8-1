@@ -460,7 +460,7 @@ public class KitchenSinkController {
 			subStage +=20 ; 
 		}break;
 		case 22:{
-			if(text.length()>32 || text.length()<=0) {
+			if(text.length()<32 || text.length()>=0) {
         		currentUser.setName(text);
         		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
         		subStage = 0;   
