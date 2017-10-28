@@ -177,7 +177,7 @@ public class KitchenSinkController {
 			}finally {
 				currentStage = "Main";
 				subStage = 0;
-				msgbuffer = currentUser.toString() + "User data reloaded. Type anything to continue...";
+				msgbuffer = "User data reloaded. Type anything to continue...";
 			}
 		}catch(Exception e){
 			msgbuffer = "Welcome!!\nTo start using our services, please follow the instructions below.\n\n"

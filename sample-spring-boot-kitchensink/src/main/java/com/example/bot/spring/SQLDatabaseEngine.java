@@ -59,7 +59,6 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 				newuser.setProtein(rs.getDouble(6));
 				newuser.setVegfruit(rs.getDouble(7));
 				newuser.setOtherInfo(rs.getString(9));
-				/* this contains bug: cannot load array*/
 				Array sqlArray = rs.getArray(8);
 				newuser.setEatingHabits((Boolean[])sqlArray.getArray());
 				
