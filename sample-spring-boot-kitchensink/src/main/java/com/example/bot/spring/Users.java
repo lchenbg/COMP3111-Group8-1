@@ -8,6 +8,9 @@ public class Users {
 	protected double height = 0;
 	protected int age = 10;
 
+	public Users(String UID) {
+		this.UID = UID;
+	}
 	public Users(String UID, String name) {
 		this.UID = UID;
 		this.name = name;	

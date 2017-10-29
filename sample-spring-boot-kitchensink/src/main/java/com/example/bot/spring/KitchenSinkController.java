@@ -250,6 +250,7 @@ public class KitchenSinkController {
 		switch(subStage) {	
 		case 0:{
 			if(text.equals("1")) {
+				currentUser = new Users(event.getSource().getUserId());
         		this.replyText(replyToken, "Please enter your name: (1-32 characters)");
         		subStage += 1;
         	}
@@ -262,18 +263,17 @@ public class KitchenSinkController {
         	}
 		}break;
 		case 1:{
-			if (text.length()>32 || text.length()<=0) {
-				this.replyText(replyToken,"Please enter your name: (1-32 characters)");
-			}
-			else {
-				currentUser = new Users(event.getSource().getUserId(), text);
+			if(inputChecker.NameEditting(text,currentUser,database,"set")) {
 				this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
 				subStage += 1;
+				}
+			else {
+				this.replyText(replyToken,"Please enter your name: (1-32 characters)");
+				}
 			}
 		}break;
 		case 2:{
-			if(Character.toUpperCase(text.charAt(0))=='M' ||Character.toUpperCase(text.charAt(0))=='F') {
-				currentUser.setGender(text.charAt(0));
+			if(inputChecker.GenderEditting(text,currentUser,database,"set")) {
 				this.replyText(replyToken, "Please enter your height in cm:");
 				subStage+=1;
 			}
@@ -283,8 +283,7 @@ public class KitchenSinkController {
 		}break;
 		case 3:{
 			try {
-				if( Double.parseDouble(text) < 260 && Double.parseDouble(text)> 50 ) {
-					currentUser.setHeight(Double.parseDouble(text));
+				if( inputChecker.HeightEditting(text,currentUser,database,"set") ) {
 					this.replyText(replyToken, "Please enter your weight in kg:");
 					subStage+=1;
 				}
@@ -295,8 +294,7 @@ public class KitchenSinkController {
 		}break;
 		case 4:{
 			try {
-				if( Double.parseDouble(text) < 200 && Double.parseDouble(text)> 20 ) {
-					currentUser.setWeight(Double.parseDouble(text));
+				if( inputChecker.WeightEditting(text,currentUser,database,"set") ) {
 					this.replyText(replyToken, "Please enter your age in years old:");
 					subStage+=1;
 				}
@@ -306,8 +304,9 @@ public class KitchenSinkController {
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 5:{
-			if(inputChecker.ageEditting(text, currentUser, database, "update")) {
+			if(inputChecker.ageEditting(text, currentUser, database, "set")) {
        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+       			database.updateUser(currentUser);
        			currentStage = "Main";
        			subStage = 0;
 			}

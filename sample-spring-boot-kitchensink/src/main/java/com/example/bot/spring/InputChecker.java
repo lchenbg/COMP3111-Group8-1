@@ -6,7 +6,7 @@ public class InputChecker {
 	}
 	public boolean ValidGender(String text) {
 		return (Character.toUpperCase(text.charAt(0))=='M' ||Character.toUpperCase(text.charAt(0))=='F');
-		}
+	}
 	public boolean ValidHeight(String text) throws NumberFormatException {
 		return( Double.parseDouble(text) < 260 && Double.parseDouble(text)> 50 );
 	}
@@ -40,7 +40,7 @@ public class InputChecker {
 	
 	private void ModeSwitcher( Users currentUser, SQLDatabaseEngine database, String mode) {
 		switch(mode) {
-		case "set":database.pushUser(currentUser);break;
+		case "set":break;
 		case "update" :database.updateUser(currentUser);break;
 		default:System.out.println("Mode error. Set failed.");
 		}
@@ -58,9 +58,20 @@ public class InputChecker {
 			}
 		}catch(NumberFormatException ne){return false;}
 	}
+	public boolean GenderEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
+		if(ValidGender(text)) {
+    		currentUser.setGender(text.charAt(0));
+    		ModeSwitcher(currentUser, database, mode);
+    		return true;
+    	}
+		else
+			return false;
+	}
+	
 	public boolean NameEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
 		if(ValidName(text)) {
     		currentUser.setName(text);
+    		ModeSwitcher(currentUser, database, mode);
     		return true;
     	}
 		else
