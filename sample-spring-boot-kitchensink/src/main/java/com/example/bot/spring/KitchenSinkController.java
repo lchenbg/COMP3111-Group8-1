@@ -778,18 +778,13 @@ public class KitchenSinkController {
 			}
 		}break;
 		case 21:{
-			if(Integer.parseInt(text) == 1) {
-				this.replyText(replyToken, "redirecting...type anything to continue.");
-				subStage = 1;
-				break;
-			}
-			else {
-				this.replyText(replyToken, "redirecting...type anything to continue.");
+			try {
+				if(Integer.parseInt(text) == 1) subStage = 1;
+				else subStage = 0;
+			}catch(Exception ex) {
 				subStage = 0;
-				break;
-			}
-		}
-		
+			}finally { this.replyText(replyToken, "redirecting...type anything to continue.");}	
+		}break;
 		default:break;
 		}
 
