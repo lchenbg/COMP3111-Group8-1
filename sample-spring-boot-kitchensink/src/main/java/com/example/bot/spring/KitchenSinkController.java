@@ -97,6 +97,7 @@ public class KitchenSinkController {
 	private Users currentUser = null;
 	private SQLDatabaseEngine database;
 	private String itscLOGIN;
+	private InputChecker inputChecker = new InputChcker();
 	
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
@@ -246,8 +247,6 @@ public class KitchenSinkController {
 		switch(subStage) {	
 		case 0:{
 			if(text.equals("1")) {
-				log.info("0");//
-        		//read inputs
         		this.replyText(replyToken, "Please enter your name: (1-32 characters)");
         		subStage += 1;
         	}
@@ -511,7 +510,7 @@ public class KitchenSinkController {
 		}break;
 		case 25:{
 			try {
-				if( Double.parseDouble(text) < 80 && Double.parseDouble(text)> 00 ) {
+				if( inputChecker.validBodyfat(text) ) {
 					((DetailedUser)currentUser).setBodyFat(Double.parseDouble(text));
 					this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
 					subStage = 0;   
