@@ -71,6 +71,9 @@ public class HealthSearch {
 			
 			this.water = searchweb.RegexStringProperty(result, "Water");
 		}
+		else {
+			this.isFound=false;
+		}
 		return this.isFound;
 	}
 	public boolean getStatus() {
