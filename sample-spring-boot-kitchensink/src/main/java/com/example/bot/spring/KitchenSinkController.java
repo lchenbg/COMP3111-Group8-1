@@ -299,7 +299,7 @@ public class KitchenSinkController {
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 5:{
-			if(inputChecker.ageEditting(text, currentUser, database, "set")) {
+			if(inputChecker.AgeEditting(text, currentUser, database, "set")) {
        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
        			database.pushUser(currentUser);
        			currentStage = "Main";
@@ -428,34 +428,29 @@ public class KitchenSinkController {
 				subStage =0; 
 			}
 		}break;
-		//////////////////////////////////////////////////
 		case 1:{
 			this.replyText(replyToken, "Please enter the age you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 21:{
-			if(inputChecker.ageEditting(text, currentUser, database, "update")) {
+			if(inputChecker.AgeEditting(text, currentUser, database, "update")) {
        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
        			subStage = 0;
 			}
 			else
 				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
-		///////////////////////////////////////////////////
 		case 2:{
 			this.replyText(replyToken, "Please enter the name you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 22:{
-			if(text.length()<32 || text.length()>=0) {
-        		currentUser.setName(text);
-        		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        		subStage = 0;   
-        		database.updateUser(currentUser);
-        		}
-			else {
-				this.replyText(replyToken, "Please enter names in 32 characters!!");
+			if(inputChecker.NameEditting(text, currentUser, database, "update")) {
+       			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+       			subStage = 0;
 			}
+			else
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		
 		case 3:{
@@ -463,154 +458,114 @@ public class KitchenSinkController {
 			subStage +=20 ; 
 		}break;
 		case 23:{
-			try {
-				if( Double.parseDouble(text) < 260 && Double.parseDouble(text)> 20 ) {
-					currentUser.setWeight(Double.parseDouble(text));
-					this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-					subStage = 0;   
-	        		database.updateUser(currentUser);
-				}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.WeightEditting(text, currentUser, database, "update")) {
+	       		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+			}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 4:{
 			this.replyText(replyToken, "Please enter the height you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 24:{
-			try {
-				if( Double.parseDouble(text) < 260 && Double.parseDouble(text)> 50 ) {
-					currentUser.setHeight(Double.parseDouble(text));
-					this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-					subStage = 0;   
-	        		database.updateUser(currentUser);
-				}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.HeightEditting(text, currentUser, database, "update")) {
+	    		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+			}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 5:{
 			this.replyText(replyToken, "Please enter the bodyfat(%) you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 25:{
-			try {
-				if( inputChecker.ValidBodyfat(text) ) {
-					((DetailedUser)currentUser).setBodyFat(Double.parseDouble(text));
-					this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-					subStage = 0;   
-	        		database.updateUser(currentUser);
-				}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.BodyfatEditting(text, currentUser, database, "update")) {
+	      		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+			}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 6:{
 			this.replyText(replyToken, "Please enter the hours of excercise per day you wish to change:");
 			subStage +=20 ; 
 		}break;
-		case 26:{
-			try {
-				if( Integer.parseInt(text) < 16 && Integer.parseInt(text)>= 0 ) {
-        			((DetailedUser)currentUser).setExercise(Integer.parseInt(text));
-        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        			subStage = 0;   
-        			database.updateUser(currentUser);
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+		case 26:{	
+			if(inputChecker.ExerciseEditting(text, currentUser, database, "update")) {
+	       		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+        		}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 7:{
 			this.replyText(replyToken, "Please enter the calories consumption(kcal) per day you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 27:{
-			try {
-				if( Integer.parseInt(text) < 15000 && Integer.parseInt(text)> 0 ) {
-        			((DetailedUser)currentUser).setCalories(Integer.parseInt(text));
-        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        			subStage = 0;   
-        			database.updateUser(currentUser);
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.CaloriesEditting(text, currentUser, database, "update")) {
+	       		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+        		}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 8:{
 			this.replyText(replyToken, "Please enter the carbohydrates consumption(g) per day you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 28:{
-			try {
-				if( Double.parseDouble(text) < 3000 && Double.parseDouble(text)> 0 ) {
-        			((DetailedUser)currentUser).setCarbs(Double.parseDouble(text));
-        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        			subStage = 0;   
-        			database.updateUser(currentUser);
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.CarbsEditting(text, currentUser, database, "update")) {
+	       		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+        		}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 9:{
 			this.replyText(replyToken, "Please enter the protein consumption(g) per day you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 29:{
-			try {
-				if( Double.parseDouble(text) < 1000 && Double.parseDouble(text)> 0 ) {
-        			((DetailedUser)currentUser).setProtein(Double.parseDouble(text));
-        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        			subStage = 0;   
-        			database.updateUser(currentUser);
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.ProteinEditting(text, currentUser, database, "update")) {
+	       		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+        		}
+			else
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 10:{
 			this.replyText(replyToken, "Please enter the veg/fruit consumption(servings) per day you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 30:{
-			try {
-				if( Double.parseDouble(text) < 50 && Double.parseDouble(text)> 0 ) {
-        			((DetailedUser)currentUser).setVegfruit(Double.parseDouble(text));
-        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        			subStage = 0;   
-        			database.updateUser(currentUser);
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.VegfruitEditting(text, currentUser, database, "update")) {
+	       		this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+	       		subStage = 0;
+        		}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 11:{
 			this.replyText(replyToken, "Please enter other information about yourself that you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 31:{
-			((DetailedUser)currentUser).setOtherInfo(text);
-			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-			subStage = 0;   
-			database.updateUser(currentUser);
+			if(inputChecker.OtherinfoEditting(text, currentUser, database, "update")) {
+       			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+       			subStage = 0;
+			}
+			else 
+				this.replyText(replyToken, "Please enter some with characters less then 1000!");
 		}break;
 		case 12:{
 			this.replyText(replyToken,"These are all about your body:\n\n" 	+ currentUser.toString()+"\nType any to continue.");
 			subStage = 0;  
 		}break;
-		
-		
-		
+			
 		default:{
 			this.replyText(replyToken, "Some problem occurs.Type any key to return to main menu.");
 			log.info("Stage Error!!");

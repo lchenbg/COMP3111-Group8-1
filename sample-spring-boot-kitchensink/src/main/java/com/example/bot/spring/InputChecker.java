@@ -46,19 +46,19 @@ public class InputChecker {
 		}
 	}
 	
-	public boolean ageEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
+	public boolean AgeEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
 		try {
 			if( ValidAge(text)) {
     			currentUser.setAge(Integer.parseInt(text)); 
     			ModeSwitcher(currentUser, database, mode);
     			return true;
-    			}
-			else {
+    		}
+			else 
 				return false;
-			}
 		}catch(NumberFormatException ne){return false;}
 	}
 	public boolean GenderEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
+		try {
 		if(ValidGender(text)) {
     		currentUser.setGender(text.charAt(0));
     		ModeSwitcher(currentUser, database, mode);
@@ -66,9 +66,11 @@ public class InputChecker {
     	}
 		else
 			return false;
+		}catch(NumberFormatException ne){return false;}
 	}
 	
 	public boolean NameEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
+		try {
 		if(ValidName(text)) {
     		currentUser.setName(text);
     		ModeSwitcher(currentUser, database, mode);
@@ -76,6 +78,7 @@ public class InputChecker {
     	}
 		else
 			return false;
+		}catch(NumberFormatException ne){return false;}
 	}
 	public boolean WeightEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
 		try {
@@ -83,10 +86,9 @@ public class InputChecker {
 				currentUser.setWeight(Double.parseDouble(text)); 
 				ModeSwitcher(currentUser, database, mode);
 				return true;
-				}
-			else {
-				return false;
 			}
+			else 
+				return false;
 		}catch(NumberFormatException ne){return false;}
 	}
 	public boolean HeightEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
@@ -176,12 +178,14 @@ public class InputChecker {
 	public boolean EatingEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
 		return false;
 	}
-	public boolean OtherEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
+	public boolean OtherinfoEditting(String text, Users currentUser, SQLDatabaseEngine database, String mode) {
+		try {
 		if(ValidOtherinfo(text)) {
     		((DetailedUser)currentUser).setOtherInfo(text);
     		return true;
     	}
 		else
 			return false;
+		}catch(NumberFormatException ne){return false;}
 	}
 }
