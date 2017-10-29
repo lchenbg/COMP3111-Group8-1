@@ -267,19 +267,16 @@ public class KitchenSinkController {
 				this.replyText(replyToken, "Please enter your gender: (M for male F for female)");
 				subStage += 1;
 				}
-			else {
+			else 
 				this.replyText(replyToken,"Please enter your name: (1-32 characters)");
-				}
-			}
 		}break;
 		case 2:{
 			if(inputChecker.GenderEditting(text,currentUser,database,"set")) {
 				this.replyText(replyToken, "Please enter your height in cm:");
 				subStage+=1;
 			}
-			else {
+			else 
 				this.replyText(replyToken, "Please enter your gender: (M for male F for female):");
-			}
 		}break;
 		case 3:{
 			try {
@@ -287,9 +284,8 @@ public class KitchenSinkController {
 					this.replyText(replyToken, "Please enter your weight in kg:");
 					subStage+=1;
 				}
-				else {
+				else 
 					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 4:{
@@ -298,9 +294,8 @@ public class KitchenSinkController {
 					this.replyText(replyToken, "Please enter your age in years old:");
 					subStage+=1;
 				}
-				else {
+				else 
 					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 5:{
