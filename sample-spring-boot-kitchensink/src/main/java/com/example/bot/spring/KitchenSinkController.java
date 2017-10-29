@@ -584,64 +584,48 @@ public class KitchenSinkController {
 			subStage +=1;
 		}break;
 		case 1:{
-			try {
-				if( Double.parseDouble(text) < 80 && Double.parseDouble(text)> 1 ) {
-        			((DetailedUser)currentUser).setBodyFat(Double.parseDouble(text));
-        			this.replyText(replyToken, "Please tell us your average daily calories consumption(in kcal):");
-        			subStage +=1 ;   
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.BodyfatEditting(text, currentUser, database, "set")) {
+        		this.replyText(replyToken, "Please tell us your average daily calories consumption(in kcal):");
+        		subStage +=1 ;   
+        		}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
+				
 		}break;
 		case 2:{
-			try {
-				if( Integer.parseInt(text) < 15000 && Integer.parseInt(text)> 0 ) {
-					((DetailedUser)currentUser).setCalories(Integer.parseInt(text));
-        			this.replyText(replyToken, "Please tell us your average daily carbohydrates consumption(roughly in g):");
-        			subStage +=1 ;   
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.ExerciseEditting(text, currentUser, database, "set")) {
+        		this.replyText(replyToken, "Please tell us your average daily carbohydrates consumption(roughly in g):");
+        		subStage +=1 ;   
+        		}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 3:{
-			try {
-				if( Double.parseDouble(text) < 3000 && Double.parseDouble(text)> 0 ) {
-					((DetailedUser)currentUser).setCarbs(Double.parseDouble(text));
+			if(inputChecker.CarbsEditting(text, currentUser, database, "set")) {
         			this.replyText(replyToken, "Please tell us your average daily protein consumption(roughly in g):");
         			subStage +=1 ;   
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
 				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 4:{
-			try {
-				if( Double.parseDouble(text) < 1000 && Double.parseDouble(text)> 0 ) {
-					((DetailedUser)currentUser).setProtein(Double.parseDouble(text));
+			if(inputChecker.ProteinEditting(text, currentUser, database, "set")) {
         			this.replyText(replyToken, "Please tell us your average daily vegetable/fruit consumption(in serving):");
         			subStage +=1 ;   
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
 				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 5:{
-			try {
-				if( Double.parseDouble(text) < 50 && Double.parseDouble(text)> 0 ) {
-					((DetailedUser)currentUser).setVegfruit(Double.parseDouble(text));
+			if(inputChecker.VegfruitEditting(text, currentUser, database, "set")) {
         			this.replyText(replyToken, "Do you eat breakfast?(y/n)");
         			subStage +=1 ;   
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
 				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 6:{
 			boolean input = false;
@@ -704,23 +688,23 @@ public class KitchenSinkController {
 			subStage += 1; 
 		}break;
 		case 12:{
-			try {
-				if( Integer.parseInt(text) < 16 && Integer.parseInt(text)>= 0 ) {
-					((DetailedUser)currentUser).setExercise(Integer.parseInt(text));
-					this.replyText(replyToken, "Any other infomation about your body you wish to let us know?(in 1000 characters)");
-					subStage +=1;   
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter integer numbers!!");}
+			if(inputChecker.ExercicseEditting(text, currentUser, database, "set")) {
+				this.replyText(replyToken, "Any other infomation about your body you wish to let us know?(in 1000 characters)");
+				subStage +=1;   
+        		}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
+			
 		}break;
 		case 13:{
-			((DetailedUser)currentUser).setOtherInfo(text);
-			database.pushUser(currentUser);
-			this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
-			currentStage = "Main";//back to main 
-			subStage =0;  
+			if(inputChecker.OtherinfoEditting(text, currentUser, database, "set")) {
+				database.pushUser(currentUser);
+				this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
+				currentStage = "Main";//back to main 
+				subStage =0;  
+			}
+			else
+				this.replyText(replyToken, "Please enter something in 1000 characters!!");
 		}break;
 		
 		default:
