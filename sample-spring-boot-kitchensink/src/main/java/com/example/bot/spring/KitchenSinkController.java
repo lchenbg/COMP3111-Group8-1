@@ -279,24 +279,20 @@ public class KitchenSinkController {
 				this.replyText(replyToken, "Please enter your gender: (M for male F for female):");
 		}break;
 		case 3:{
-			try {
-				if( inputChecker.HeightEditting(text,currentUser,database,"set") ) {
-					this.replyText(replyToken, "Please enter your weight in kg:");
-					subStage+=1;
-				}
-				else 
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if( inputChecker.HeightEditting(text,currentUser,database,"set") ) {
+				this.replyText(replyToken, "Please enter your weight in kg:");
+				subStage+=1;
+			}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 4:{
-			try {
-				if( inputChecker.WeightEditting(text,currentUser,database,"set") ) {
-					this.replyText(replyToken, "Please enter your age in years old:");
-					subStage+=1;
-				}
-				else 
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if( inputChecker.WeightEditting(text,currentUser,database,"set") ) {
+				this.replyText(replyToken, "Please enter your age in years old:");
+				subStage+=1;
+			}
+			else 
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
 		case 5:{
 			if(inputChecker.AgeEditting(text, currentUser, database, "set")) {
@@ -407,7 +403,7 @@ public class KitchenSinkController {
 											+ "11 Edit Other Information about you\n"
 											+ "12 Show all your states \n"
 											+ "(type other things to back to menu)");
-			subStage =-1;
+			subStage = -1;
 		}break;
 		case -1:{ // redirecting stage
 			try{
@@ -428,7 +424,7 @@ public class KitchenSinkController {
 				subStage =0; 
 			}
 		}break;
-		case 1:{
+		case 1:{ 
 			this.replyText(replyToken, "Please enter the age you wish to change to:");
 			subStage +=20 ; 
 		}break;
