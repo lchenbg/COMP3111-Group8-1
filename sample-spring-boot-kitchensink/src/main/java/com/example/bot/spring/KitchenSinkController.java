@@ -98,7 +98,7 @@ public class KitchenSinkController {
 	private SQLDatabaseEngine database;
 	private String itscLOGIN;
 	private InputChecker inputChecker = new InputChecker();
-	//private HealthSearch healthSearcher = new HealthSearch();
+	private HealthSearch healthSearcher = new HealthSearch();
 	
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
@@ -758,11 +758,38 @@ public class KitchenSinkController {
 			subStage = 10;
 		}break;
 		case 10:{
-			//search here
-			this.replyText(replyToken, "Please enter the name of food you wish to know about:");
-			
-		
+			healthSearcher.setKeyword(text);
+			healthSearcher.setMode(0);
+			if(healthSearcher.search()) {
+				String msg = healthSearcher.getUnit()+":\n"
+						+"Energy: "+healthSearcher.getEnergy()+"kcal\n"
+						+"Carbohydragate: "+healthSearcher.getCarbohydrate()+"g\n"
+						+"Protein:"+healthSearcher.getProtein()+"g\n"
+						+"Fat: "+healthSearcher.getFat()+"g\n"
+						+"Suger: "+healthSearcher.getSugar()+"g\n"
+						+"Water:"+healthSearcher.getWater()+"g\n"
+						+"\nType 1 to search for other food.\nType other thing to go back to Healthpedia.";
+				this.replyText(replyToken, msg);
+				subStage += 1;
+			}
+			else {
+				this.replyText(replyToken, "Food not found.\nType 1 to search for other food.\nType other thing to go back to Healthpedia.");
+				subStage +=1;
+			}
 		}break;
+		case 11:{
+			if(Integer.parseInt(text) == 1) {
+				this.replyText(replyToken, "redirecting...type anything to continue.");
+				subStage = 1;
+				break;
+			}
+			else {
+				this.replyText(replyToken, "redirecting...type anything to continue.");
+				subStage = 0;
+				break;
+			}
+		}
+		
 		default:break;
 		}
 
