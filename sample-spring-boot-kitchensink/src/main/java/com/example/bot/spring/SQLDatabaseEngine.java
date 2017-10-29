@@ -94,7 +94,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		} catch (Exception e) {
 			System.out.println(e);		
 		} 
-		if(user instanceof DetailedUser)
+		if(user instanceof DetailedUser) {
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
@@ -119,6 +119,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			System.out.println(e);
 			return result;
 		} 
+		}
 		return result;	
 	}
 	

@@ -301,7 +301,7 @@ public class KitchenSinkController {
 		case 5:{
 			if(inputChecker.ageEditting(text, currentUser, database, "set")) {
        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-       			database.updateUser(currentUser);
+       			database.pushUser(currentUser);
        			currentStage = "Main";
        			subStage = 0;
 			}
