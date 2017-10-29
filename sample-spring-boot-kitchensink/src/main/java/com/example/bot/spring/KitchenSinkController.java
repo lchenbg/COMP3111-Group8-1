@@ -307,9 +307,10 @@ public class KitchenSinkController {
 				if( Integer.parseInt(text) < 150 && Integer.parseInt(text)> 7 ) {
         			currentUser.setAge(Integer.parseInt(text));
         			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+        			database.pushUser(currentUser);
         			currentStage = "Main";
         			subStage = 0;   
-        			database.pushUser(currentUser);
+        			
         			}
 				else {
 					this.replyText(replyToken, "Please enter reasonable numbers!");
@@ -437,23 +438,20 @@ public class KitchenSinkController {
 			}
 			
 		}break;
+		//////////////////////////////////////////////////
 		case 1:{
 			this.replyText(replyToken, "Please enter the age you wish to change to:");
 			subStage +=20 ; 
 		}break;
 		case 21:{
-			try {
-				if( Integer.parseInt(text) < 150 && Integer.parseInt(text)> 7 ) {
-        			currentUser.setAge(Integer.parseInt(text));
-        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        			subStage = 0;   
-        			database.updateUser(currentUser);
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.ageEditting(text, currentUser, database, "update")) {
+       			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+       			subStage = 0;
+			}
+			else
+				this.replyText(replyToken, "Please enter reasonable numbers!");
 		}break;
+		///////////////////////////////////////////////////
 		case 2:{
 			this.replyText(replyToken, "Please enter the name you wish to change to:");
 			subStage +=20 ; 
