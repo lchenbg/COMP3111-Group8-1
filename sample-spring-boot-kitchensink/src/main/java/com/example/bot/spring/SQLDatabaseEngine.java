@@ -92,14 +92,9 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 			stmt.close();
 			connection.close();
 		} catch (Exception e) {
-			System.out.println(e);
-			return result;
+			System.out.println(e);		
 		} 
-		return result;	
-	}
-	boolean pushDetailedUser(Users user) {
-		boolean result = false;
-		
+		if(user instanceof DetailedUser)
 		try {
 			Connection connection = this.getConnection();
 			PreparedStatement stmt = connection.prepareStatement(
@@ -126,6 +121,7 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		} 
 		return result;	
 	}
+	
 	boolean updateUser(Users user) {
 		boolean result = false;
 		

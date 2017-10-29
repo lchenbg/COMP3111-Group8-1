@@ -98,11 +98,14 @@ public class KitchenSinkController {
 	private SQLDatabaseEngine database;
 	private String itscLOGIN;
 	private InputChecker inputChecker = new InputChecker();
+	//private HealthSearch healthSearcher = new HealthSearch();
 	
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
 		itscLOGIN = System.getenv("ITSC_LOGIN");
 	}
+	
+	
 
 	@EventMapping
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -303,19 +306,13 @@ public class KitchenSinkController {
 			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
 		}break;
 		case 5:{
-			try {
-				if( Integer.parseInt(text) < 150 && Integer.parseInt(text)> 7 ) {
-        			currentUser.setAge(Integer.parseInt(text));
-        			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
-        			database.pushUser(currentUser);
-        			currentStage = "Main";
-        			subStage = 0;   
-        			
-        			}
-				else {
-					this.replyText(replyToken, "Please enter reasonable numbers!");
-				}
-			}catch(NumberFormatException ne){this.replyText(replyToken, "Please enter numbers!!");}
+			if(inputChecker.ageEditting(text, currentUser, database, "update")) {
+       			this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
+       			currentStage = "Main";
+       			subStage = 0;
+			}
+			else
+				this.replyText(replyToken, "Please enter reasonable numbers!");  
 		}break;
 		default:{log.info("Stage error.");}
 		}
@@ -436,7 +433,6 @@ public class KitchenSinkController {
 				currentStage = "Main";//back to main 
 				subStage =0; 
 			}
-			
 		}break;
 		//////////////////////////////////////////////////
 		case 1:{
@@ -508,7 +504,7 @@ public class KitchenSinkController {
 		}break;
 		case 25:{
 			try {
-				if( inputChecker.validBodyfat(text) ) {
+				if( inputChecker.ValidBodyfat(text) ) {
 					((DetailedUser)currentUser).setBodyFat(Double.parseDouble(text));
 					this.replyText(replyToken, "Your data has been recorded.\nInput anything to conitnue.");
 					subStage = 0;   
@@ -772,7 +768,7 @@ public class KitchenSinkController {
 		}break;
 		case 13:{
 			((DetailedUser)currentUser).setOtherInfo(text);
-			database.pushDetailedUser(currentUser);
+			database.pushUser(currentUser);
 			this.replyText(replyToken, "All set and recorded. Type anything to return to main menu.");
 			currentStage = "Main";//back to main 
 			subStage =0;  
@@ -796,6 +792,51 @@ public class KitchenSinkController {
 		subStage = 0; 
 	}
 	private void healthPediaHandler(String replyToken, Event event, String text) {
+		//user key word input
+		//String 
+		switch(subStage) {
+		case 0:{
+			this.replyText(replyToken,"Welcome to HealthPedia! You are welcome to query any thing about food!\n"
+					+ "Please type the function choice you wish to use as below.\n\n"
+					+ "1 Food Searcher\n"
+					+ "2\n"
+					+ "3\n"
+					+ "4\n\n"
+					+ "Type other things to go back to main menu.");
+			subStage -= 1;
+		}break;
+		
+		case -1:{ // redirecting stage
+			try{
+				subStage = Integer.parseInt(text);
+				if (subStage >=1 && subStage <= 4) { 
+					this.replyText(replyToken, "Redirecting...type anything to continue.");
+				}
+				else {
+					this.replyText(replyToken, "Redirecting...type anything to continue.");
+					currentStage = "Main";//back to main 
+					subStage =0; 
+				}
+			}catch(Exception e) {
+				this.replyText(replyToken, "Redirecting...type anything to continue.");
+				currentStage = "Main";//back to main 
+				subStage =0; 
+			}
+		}break;
+		
+		case 1:{
+			this.replyText(replyToken, "Please enter the name of food you wish to know about:");
+			subStage = 10;
+		}break;
+		case 10:{
+			//search here
+			this.replyText(replyToken, "Please enter the name of food you wish to know about:");
+			
+		
+		}break;
+		default:break;
+		}
+
 		this.replyText(replyToken, "All set. Type anything to return to main menu...");
 		currentStage = "Main";//back to main 
 		subStage = 0; 
