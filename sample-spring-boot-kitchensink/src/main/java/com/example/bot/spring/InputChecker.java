@@ -1,8 +1,7 @@
-package com.linecorp.bot.model.message;
-
+package com.example.bot.spring;
 public class InputChecker {
-
-	public boolean validName(String text) {
+	
+	/*public boolean validName(String text) {
 		
 	}
 	public boolean validGender(String text) {}
@@ -14,11 +13,11 @@ public class InputChecker {
 	public boolean validAge(String text) throws NumberFormatException {
 	}
 	public boolean validExercise(String text) throws NumberFormatException {
-	}
+	}*/
 	public boolean validBodyfat(String text) throws NumberFormatException {
 		return( Double.parseDouble(text) < 80 && Double.parseDouble(text)> 1);
-	}
-	public boolean validCaloriesString text) throws NumberFormatException {
+	}/*
+	public boolean validCalories(String text) throws NumberFormatException {
 		return( Integer.parseInt(text) < 15000 && Integer.parseInt(text)> 0 );
 	}
 	public boolean validCarbs(String text) throws NumberFormatException {
@@ -29,7 +28,7 @@ public class InputChecker {
 	}
 	public boolean validVegfruit(String text) throws NumberFormatException {
 		return( Double.parseDouble(text) < 50 && Double.parseDouble(text)> 0 );
-
-	public boolean validOtherinfo(String text) throws NumberFormatException {
 	}
+	public boolean validOtherinfo(String text) throws NumberFormatException {
+	}*/
 }

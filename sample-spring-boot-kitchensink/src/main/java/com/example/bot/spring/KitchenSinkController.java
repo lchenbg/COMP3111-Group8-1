@@ -97,7 +97,7 @@ public class KitchenSinkController {
 	private Users currentUser = null;
 	private SQLDatabaseEngine database;
 	private String itscLOGIN;
-	private InputChecker inputChecker = new InputChcker();
+	private InputChecker inputChecker = new InputChecker();
 	
 	public KitchenSinkController() {
 		database = new SQLDatabaseEngine();
