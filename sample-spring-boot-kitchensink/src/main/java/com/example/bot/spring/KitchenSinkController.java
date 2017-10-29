@@ -593,7 +593,7 @@ public class KitchenSinkController {
 				
 		}break;
 		case 2:{
-			if(inputChecker.ExerciseEditting(text, currentUser, database, "set")) {
+			if(inputChecker.CaloriesEditting(text, currentUser, database, "set")) {
         		this.replyText(replyToken, "Please tell us your average daily carbohydrates consumption(roughly in g):");
         		subStage +=1 ;   
         		}
