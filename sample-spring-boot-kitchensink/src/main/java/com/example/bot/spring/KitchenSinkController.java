@@ -755,9 +755,9 @@ public class KitchenSinkController {
 		
 		case 1:{
 			this.replyText(replyToken, "Please enter the name of food you wish to know about:");
-			subStage = 10;
+			subStage += 10;
 		}break;
-		case 10:{
+		case 11:{
 			healthSearcher.setKeyword(text);
 			healthSearcher.setMode(0);
 			if(healthSearcher.search()) {
@@ -770,14 +770,14 @@ public class KitchenSinkController {
 						+"Water:"+healthSearcher.getWater()+"g\n"
 						+"\nType 1 to search for other food.\nType other thing to go back to Healthpedia.";
 				this.replyText(replyToken, msg);
-				subStage += 1;
+				subStage += 10;
 			}
 			else {
 				this.replyText(replyToken, "Food not found.\nType 1 to search for other food.\nType other thing to go back to Healthpedia.");
-				subStage +=1;
+				subStage +=10;
 			}
 		}break;
-		case 11:{
+		case 21:{
 			if(Integer.parseInt(text) == 1) {
 				this.replyText(replyToken, "redirecting...type anything to continue.");
 				subStage = 1;
