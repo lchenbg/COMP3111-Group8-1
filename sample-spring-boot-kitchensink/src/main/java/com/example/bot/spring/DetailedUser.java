@@ -10,6 +10,7 @@ public class DetailedUser extends Users{
     private double vegfruitConsump = 0; // in servings
     private boolean[] eatingHabits = {false,false,false,false,false,false};//eatBF,eatLunch,eatAFT,eatDinner,eatMS, eatMore 
     private String otherInfo  = "Default";
+   // private int assessmentScore = 0;
 	
     public DetailedUser(Users u) {
     	super(u);
@@ -30,6 +31,7 @@ public class DetailedUser extends Users{
 			eatingHabits[i] = h[i].booleanValue();
 		}
 	}
+	//public int getAssessmentScore() {return assessmentScore;}
 	public void setOtherInfo(String s) {otherInfo = s;}
 	public int getExercise() {return amountOfExercise;}
 	public double getBodyFat() {return bodyFat;}
@@ -39,6 +41,7 @@ public class DetailedUser extends Users{
 	public double getVegfruit() {return vegfruitConsump;}
 	public boolean[] getEatingHabits() {return eatingHabits;}
 	public String getOtherInfo() {return otherInfo;}
+	//public void setAssessmentScore(int s) {assessmentScore = s;}
 	
 	@Override
 	public String toString() { // this converts user to Json format

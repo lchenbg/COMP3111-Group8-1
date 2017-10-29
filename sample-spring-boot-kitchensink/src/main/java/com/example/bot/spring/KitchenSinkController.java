@@ -688,7 +688,7 @@ public class KitchenSinkController {
 			subStage += 1; 
 		}break;
 		case 12:{
-			if(inputChecker.ExercicseEditting(text, currentUser, database, "set")) {
+			if(inputChecker.ExerciseEditting(text, currentUser, database, "set")) {
 				this.replyText(replyToken, "Any other infomation about your body you wish to let us know?(in 1000 characters)");
 				subStage +=1;   
         		}
