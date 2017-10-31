@@ -780,7 +780,10 @@ public class KitchenSinkController {
 		case 21:{
 			try {
 				if(Integer.parseInt(text) == 1) subStage = 1;
-				else subStage = 0;
+				else {
+					throws new Exception ex;
+					subStage = 0;
+				}
 			}catch(Exception ex) {
 				subStage = 0;
 			}finally { this.replyText(replyToken, "redirecting...type anything to continue.");}	
